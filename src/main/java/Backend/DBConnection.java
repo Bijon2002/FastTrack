@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 
 /**
  * Reusable DB connection utility class
- * Author: Boss Venu
+ * Author: Boss 
  */
 public class DBConnection {
 
@@ -30,4 +30,15 @@ public class DBConnection {
             return null;
         }
     }
+    public static void main(String[] args) {
+        Connection con = getConnection();
+        if (con != null) {
+            System.out.println("✅ Connection Successful!");
+        } else {
+            System.out.println("❌ Connection Failed.");
+        }
+        
+        }
+    
 }
+

@@ -4,11 +4,16 @@
  */
 package frontend;
 
+import Backend.DBConnection;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import javax.swing.JOptionPane;
 import Backend.DBConnection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -32,7 +37,42 @@ public class DriverForm extends javax.swing.JFrame {
     vehicletxt.setText("");
     buttonGroup1.clearSelection(); // group your radio buttons in NetBeans GUI
 }
+    
+public void loadTable() {
+    try {
+        Connection con = DBConnection.getConnection();
+        String sql = "SELECT * FROM drivers"; // your table name
+        PreparedStatement pst = con.prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
 
+        // Get metadata for column names
+        ResultSetMetaData rsmd = rs.getMetaData();
+        int colCount = rsmd.getColumnCount();
+
+        // Table model to hold data
+        DefaultTableModel model = new DefaultTableModel();
+
+        // Add column names
+        for (int i = 1; i <= colCount; i++) {
+            model.addColumn(rsmd.getColumnName(i));
+        }
+
+        // Add rows
+        while (rs.next()) {
+            Object[] row = new Object[colCount];
+            for (int i = 1; i <= colCount; i++) {
+                row[i - 1] = rs.getObject(i);
+            }
+            model.addRow(row);
+        }
+
+        driverTable.setModel(model); // set data to JTable
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "❌ Error loading table: " + e.getMessage());
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -61,12 +101,13 @@ public class DriverForm extends javax.swing.JFrame {
         vehicletxt = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        driverTable = new javax.swing.JTable();
         Submitbtn = new javax.swing.JButton();
         clearbtn = new javax.swing.JButton();
         updatebtn = new javax.swing.JButton();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
+        loadbtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(792, 433));
@@ -122,7 +163,7 @@ public class DriverForm extends javax.swing.JFrame {
 
         jLabel8.setText("Status");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        driverTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -133,7 +174,7 @@ public class DriverForm extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(driverTable);
 
         Submitbtn.setText("ADD");
         Submitbtn.addActionListener(new java.awt.event.ActionListener() {
@@ -143,6 +184,11 @@ public class DriverForm extends javax.swing.JFrame {
         });
 
         clearbtn.setText("CLEAR");
+        clearbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearbtnActionPerformed(evt);
+            }
+        });
 
         updatebtn.setText("UPDATE");
 
@@ -151,6 +197,13 @@ public class DriverForm extends javax.swing.JFrame {
 
         buttonGroup1.add(jRadioButton2);
         jRadioButton2.setText("Inactive");
+
+        loadbtn.setText("LOAD");
+        loadbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadbtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -166,10 +219,6 @@ public class DriverForm extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 618, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(60, 60, 60))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGap(43, 43, 43)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -196,13 +245,20 @@ public class DriverForm extends javax.swing.JFrame {
                                     .addComponent(routeBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addGap(34, 34, 34)
-                                .addComponent(jRadioButton1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jRadioButton2)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(loadbtn)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(jRadioButton1)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jRadioButton2)))
                                 .addGap(44, 44, 44))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 618, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(60, 60, 60)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -244,7 +300,8 @@ public class DriverForm extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Submitbtn)
                     .addComponent(clearbtn)
-                    .addComponent(updatebtn))
+                    .addComponent(updatebtn)
+                    .addComponent(loadbtn))
                 .addGap(34, 34, 34)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(53, 53, 53))
@@ -308,6 +365,15 @@ public class DriverForm extends javax.swing.JFrame {
 });
     
     }//GEN-LAST:event_SubmitbtnActionPerformed
+
+    private void clearbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearbtnActionPerformed
+        clearFields();
+    }//GEN-LAST:event_clearbtnActionPerformed
+
+    private void loadbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadbtnActionPerformed
+        loadbtn.addActionListener(e -> loadTable());
+
+    }//GEN-LAST:event_loadbtnActionPerformed
     
     /**
      * @param args the command line arguments
@@ -348,6 +414,7 @@ public class DriverForm extends javax.swing.JFrame {
     private javax.swing.JButton Submitbtn;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton clearbtn;
+    private javax.swing.JTable driverTable;
     private javax.swing.JTextField emailtxt;
     private javax.swing.JTextField fullnametxt;
     private javax.swing.JLabel jLabel1;
@@ -363,7 +430,7 @@ public class DriverForm extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JButton loadbtn;
     private javax.swing.JTextField nictxt;
     private javax.swing.JTextField pnumbertxt;
     private javax.swing.JComboBox<String> routeBox;
