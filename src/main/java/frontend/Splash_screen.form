@@ -57,10 +57,6 @@
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
       </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JPanel()"/>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="JPanel panel = new JPanel() {&#xa;    ImageIcon background = new ImageIcon(getClass().getResource(&quot;C:\\Users\\krish\\Downloads\\istockphoto-1449484368-612x612.jpg\&quot;);&#xa;    Image image = background.getImage();&#xa;&#xa;    @Override&#xa;    protected void paintComponent(Graphics g) {&#xa;        super.paintComponent(g);&#xa;        g.drawImage(image, 0, 0, getWidth(), getHeight(), this);&#xa;    }&#xa;};&#xa;panel.setLayout(new BorderLayout()); // Optional: Set layout"/>
-      </AuxValues>
 
       <Layout>
         <DimensionLayout dim="0">
