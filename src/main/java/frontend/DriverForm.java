@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import javax.swing.JOptionPane;
+import Backend.DBConnection;
 
 /**
  *
@@ -275,15 +276,17 @@ public class DriverForm extends javax.swing.JFrame {
     }//GEN-LAST:event_vehicletxtActionPerformed
 
     private void SubmitbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SubmitbtnActionPerformed
-        Submitbtn.addActionListener(e -> {
+    Submitbtn.addActionListener(e -> {
     String name = fullnametxt.getText();
     String phone = pnumbertxt.getText();
     String license = nictxt.getText();
     String address = emailtxt.getText();
 
     try {
-        Connection con = DriverManager.getConnection(url, user, pass);
-        String sql = "INSERT INTO drivers (name, phone, license_number, address) VALUES (?, ?, ?, ?)";
+        // ✅ Use your reusable DB connection class
+        Connection con = DBConnection.getConnection();
+
+        String sql = "INSERT INTO drivers (full_name, phone, nic_number, email) VALUES (?, ?, ?, ?)";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setString(1, name);
         stmt.setString(2, phone);
@@ -292,13 +295,15 @@ public class DriverForm extends javax.swing.JFrame {
 
         int rows = stmt.executeUpdate();
         if (rows > 0) {
-            JOptionPane.showMessageDialog(null, "Driver added successfully! 🚗");
-            clearFields();
-            loadDrivers();
+            JOptionPane.showMessageDialog(null, "✅ Driver added successfully!");
+            clearFields();  // Clear input fields
+            loadDrivers();  // Reload JTable if applicable
         }
-        con.close();
+
+        con.close();  // Always close the connection
     } catch (Exception ex) {
-        JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+        JOptionPane.showMessageDialog(null, "❌ Error: " + ex.getMessage());
+        ex.printStackTrace(); // Optional: print stack trace for debug
     }
 });
     
