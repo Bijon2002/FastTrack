@@ -45,16 +45,6 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="txtSender" pref="388" max="32767" attributes="0"/>
-                              <Component id="txtReceiver" alignment="0" max="32767" attributes="0"/>
-                              <Component id="txtContents" alignment="0" max="32767" attributes="0"/>
-                              <Component id="txtEta" alignment="0" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="193" max="-2" attributes="0"/>
-                      </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="btnAdd" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
@@ -64,6 +54,17 @@
                           <EmptySpace min="-2" pref="85" max="-2" attributes="0"/>
                           <Component id="btnView" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="137" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="txtSender" pref="388" max="32767" attributes="0"/>
+                              <Component id="txtReceiver" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtContents" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtEta" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jComboBox1" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="193" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -80,13 +81,7 @@
                               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="190" max="-2" attributes="0"/>
-                                  <Component id="rbtnActive" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
-                                  <Component id="rbtnInactive" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -122,8 +117,7 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="rbtnActive" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="rbtnInactive" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jComboBox1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -139,7 +133,7 @@
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jScrollPane1" min="-2" pref="127" max="-2" attributes="0"/>
-                  <EmptySpace pref="16" max="32767" attributes="0"/>
+                  <EmptySpace pref="15" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -231,30 +225,24 @@
                   <Connection code="new javax.swing.table.DefaultTableModel(&#xa;&#xa;    new Object [][] {},&#xa;    new String [] {&#xa;        &quot;ID&quot;, &quot;Sender&quot;, &quot;Receiver&quot;, &quot;Contents&quot;, &quot;Status&quot;, &quot;ETA&quot;&#xa;    }&#xa;&#xa;)    " type="code"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tableShipmentsMouseClicked"/>
+              </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable()"/>
               </AuxValues>
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JRadioButton" name="rbtnActive">
+        <Component class="javax.swing.JComboBox" name="jComboBox1">
           <Properties>
-            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-              <ComponentRef name="buttonGroup1"/>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] { &quot;Pending&quot;, &quot;Recieved&quot;, &quot;Canceled&quot;, &quot;Failed Delivery&quot; })" type="code"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Active "/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JRadioButton" name="rbtnInactive">
-          <Properties>
-            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-              <ComponentRef name="buttonGroup1"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Inactive"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rbtnInactiveActionPerformed"/>
-          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
