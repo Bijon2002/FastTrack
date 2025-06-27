@@ -224,7 +224,7 @@ public class signup extends javax.swing.JFrame {
         if (rows > 0) {
             JOptionPane.showMessageDialog(this, "✅ Registered successfully!");
             // 👉 Open signin/login page
-            new signin().setVisible(true);
+            new login().setVisible(true);
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(this, "⚠️ Registration failed.");

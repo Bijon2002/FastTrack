@@ -109,7 +109,7 @@ public class user_dashboard extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         SessionManager.logout();
-        new signin().setVisible(true);
+        new login().setVisible(true);
         this.dispose();
         System.out.println("Logged out successfully.");
     }//GEN-LAST:event_jButton1ActionPerformed
