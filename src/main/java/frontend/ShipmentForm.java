@@ -20,36 +20,18 @@ public class ShipmentForm extends javax.swing.JFrame {
     String receiver = txtReceiver.getText().trim();
     String contents = txtContents.getText().trim();
     String eta = txtEta.getText().trim();
-    
-    // Check empty fields and status
-    if (sender.isEmpty() || receiver.isEmpty() || contents.isEmpty() || eta.isEmpty() ||
-        (!rbtnActive.isSelected() && !rbtnInactive.isSelected())) {
+    String status = (String) jComboBox1.getSelectedItem();
 
-        javax.swing.JOptionPane.showMessageDialog(this, "⚠️ All fields must be filled and status selected!");
+    if (sender.isEmpty() || receiver.isEmpty() || contents.isEmpty() || eta.isEmpty() || status.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "⚠️ All fields must be filled!");
         return false;
     }
 
-    // Name pattern: only letters and spaces
     String namePattern = "^[a-zA-Z ]+$";
-    if (!sender.matches(namePattern)) {
-        javax.swing.JOptionPane.showMessageDialog(this, "⚠️ Sender name must contain only letters!");
-        return false;
-    }
 
-    if (!receiver.matches(namePattern)) {
-        javax.swing.JOptionPane.showMessageDialog(this, "⚠️ Receiver name must contain only letters!");
-        return false;
-    }
-
-    // ETA format: yyyy-mm-dd
-    if (!eta.matches("\\d{4}-\\d{2}-\\d{2}")) {
-        javax.swing.JOptionPane.showMessageDialog(this, "⚠️ ETA format must be yyyy-mm-dd!");
-        return false;
-    }
-
+   
     return true;
 }
-
 
 
     /**
@@ -86,8 +68,7 @@ public class ShipmentForm extends javax.swing.JFrame {
         txtEta = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableShipments = new javax.swing.JTable();
-        rbtnActive = new javax.swing.JRadioButton();
-        rbtnInactive = new javax.swing.JRadioButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -140,18 +121,14 @@ public class ShipmentForm extends javax.swing.JFrame {
             }
 
         )    );
-        jScrollPane1.setViewportView(tableShipments);
-
-        buttonGroup1.add(rbtnActive);
-        rbtnActive.setText("Active ");
-
-        buttonGroup1.add(rbtnInactive);
-        rbtnInactive.setText("Inactive");
-        rbtnInactive.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbtnInactiveActionPerformed(evt);
+        tableShipments.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableShipmentsMouseClicked(evt);
             }
         });
+        jScrollPane1.setViewportView(tableShipments);
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pending", "Recieved", "Canceled", "Failed Delivery" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -160,14 +137,6 @@ public class ShipmentForm extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(72, 72, 72)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtSender, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
-                            .addComponent(txtReceiver)
-                            .addComponent(txtContents)
-                            .addComponent(txtEta))
-                        .addGap(193, 193, 193))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnAdd)
                         .addGap(56, 56, 56)
@@ -176,7 +145,16 @@ public class ShipmentForm extends javax.swing.JFrame {
                         .addComponent(btnDelete)
                         .addGap(85, 85, 85)
                         .addComponent(btnView)
-                        .addGap(137, 137, 137))))
+                        .addGap(137, 137, 137))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtSender, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                            .addComponent(txtReceiver)
+                            .addComponent(txtContents)
+                            .addComponent(txtEta)
+                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(193, 193, 193))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel1)
@@ -189,12 +167,7 @@ public class ShipmentForm extends javax.swing.JFrame {
                             .addComponent(jLabel3)
                             .addComponent(jLabel2)
                             .addComponent(jLabel4)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(190, 190, 190)
-                                .addComponent(rbtnActive)
-                                .addGap(72, 72, 72)
-                                .addComponent(rbtnInactive))
+                            .addComponent(jLabel5)
                             .addComponent(jLabel6)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(186, 186, 186)
@@ -221,8 +194,7 @@ public class ShipmentForm extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(rbtnActive)
-                    .addComponent(rbtnInactive))
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -235,7 +207,7 @@ public class ShipmentForm extends javax.swing.JFrame {
                     .addComponent(btnView))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -259,7 +231,7 @@ public class ShipmentForm extends javax.swing.JFrame {
     String sender = txtSender.getText();
     String receiver = txtReceiver.getText();
     String contents = txtContents.getText();
-    String status = rbtnActive.isSelected() ? "Active" : "Inactive";
+    String status = (String) jComboBox1.getSelectedItem();
     String eta = txtEta.getText();
 
     try {
@@ -274,6 +246,7 @@ public class ShipmentForm extends javax.swing.JFrame {
         pst.executeUpdate();
         javax.swing.JOptionPane.showMessageDialog(this, "✅ Shipment Added!");
         conn.close();
+        btnViewActionPerformed(null); // Refresh table
     } catch (Exception e) {
         e.printStackTrace();
         javax.swing.JOptionPane.showMessageDialog(this, "❌ Failed to Add Shipment!");
@@ -334,13 +307,8 @@ public class ShipmentForm extends javax.swing.JFrame {
     }
     }//GEN-LAST:event_btnViewActionPerformed
 
-    private void rbtnInactiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnInactiveActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbtnInactiveActionPerformed
-
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        // TODO add your handling code here:
-     if (!validateForm()) return;
+      if (!validateForm()) return;
 
     int row = tableShipments.getSelectedRow();
     if (row == -1) {
@@ -348,12 +316,11 @@ public class ShipmentForm extends javax.swing.JFrame {
         return;
     }
 
-
     int id = (int) tableShipments.getValueAt(row, 0);
     String sender = txtSender.getText();
     String receiver = txtReceiver.getText();
     String contents = txtContents.getText();
-    String status = rbtnActive.isSelected() ? "Active" : "Inactive";
+    String status = (String) jComboBox1.getSelectedItem();
     String eta = txtEta.getText();
 
     try {
@@ -370,12 +337,25 @@ public class ShipmentForm extends javax.swing.JFrame {
         conn.close();
 
         javax.swing.JOptionPane.showMessageDialog(this, "✅ Shipment Updated!");
-        btnViewActionPerformed(null);
+        btnViewActionPerformed(null); // Refresh table
     } catch (Exception e) {
         e.printStackTrace();
         javax.swing.JOptionPane.showMessageDialog(this, "❌ Update failed!");
     }
     }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void tableShipmentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableShipmentsMouseClicked
+        // TODO add your handling code here:
+         int selectedRow = tableShipments.getSelectedRow();
+    if (selectedRow != -1) {
+        txtSender.setText(tableShipments.getValueAt(selectedRow, 1).toString());
+        txtReceiver.setText(tableShipments.getValueAt(selectedRow, 2).toString());
+        txtContents.setText(tableShipments.getValueAt(selectedRow, 3).toString());
+        jComboBox1.setSelectedItem(tableShipments.getValueAt(selectedRow, 4).toString());
+        txtEta.setText(tableShipments.getValueAt(selectedRow, 5).toString());
+    }
+        
+    }//GEN-LAST:event_tableShipmentsMouseClicked
 
     /**
      * @param args the command line arguments
@@ -418,6 +398,7 @@ public class ShipmentForm extends javax.swing.JFrame {
     private javax.swing.JButton btnUpdate;
     private javax.swing.JButton btnView;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -426,8 +407,6 @@ public class ShipmentForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JRadioButton rbtnActive;
-    private javax.swing.JRadioButton rbtnInactive;
     private javax.swing.JTable tableShipments;
     private javax.swing.JTextField txtContents;
     private javax.swing.JTextField txtEta;
