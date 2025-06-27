@@ -4,11 +4,53 @@
  */
 package frontend;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Bijon
  */
 public class ShipmentForm extends javax.swing.JFrame {
+    
+    private boolean validateForm() {
+    String sender = txtSender.getText().trim();
+    String receiver = txtReceiver.getText().trim();
+    String contents = txtContents.getText().trim();
+    String eta = txtEta.getText().trim();
+    
+    // Check empty fields and status
+    if (sender.isEmpty() || receiver.isEmpty() || contents.isEmpty() || eta.isEmpty() ||
+        (!rbtnActive.isSelected() && !rbtnInactive.isSelected())) {
+
+        javax.swing.JOptionPane.showMessageDialog(this, "⚠️ All fields must be filled and status selected!");
+        return false;
+    }
+
+    // Name pattern: only letters and spaces
+    String namePattern = "^[a-zA-Z ]+$";
+    if (!sender.matches(namePattern)) {
+        javax.swing.JOptionPane.showMessageDialog(this, "⚠️ Sender name must contain only letters!");
+        return false;
+    }
+
+    if (!receiver.matches(namePattern)) {
+        javax.swing.JOptionPane.showMessageDialog(this, "⚠️ Receiver name must contain only letters!");
+        return false;
+    }
+
+    // ETA format: yyyy-mm-dd
+    if (!eta.matches("\\d{4}-\\d{2}-\\d{2}")) {
+        javax.swing.JOptionPane.showMessageDialog(this, "⚠️ ETA format must be yyyy-mm-dd!");
+        return false;
+    }
+
+    return true;
+}
+
+
 
     /**
      * Creates new form ShipmentForm
@@ -26,6 +68,7 @@ public class ShipmentForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -40,19 +83,20 @@ public class ShipmentForm extends javax.swing.JFrame {
         txtSender = new javax.swing.JTextField();
         txtReceiver = new javax.swing.JTextField();
         txtContents = new javax.swing.JTextField();
-        txtStatus = new javax.swing.JTextField();
         txtEta = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableShipments = new javax.swing.JTable();
+        rbtnActive = new javax.swing.JRadioButton();
+        rbtnInactive = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
         jLabel1.setText("Shipment Management");
 
-        jLabel2.setText("Sender");
+        jLabel2.setText("Sender Address");
 
-        jLabel3.setText("Receiver");
+        jLabel3.setText("Receiver Address");
 
         jLabel4.setText("Contents");
 
@@ -68,6 +112,11 @@ public class ShipmentForm extends javax.swing.JFrame {
         });
 
         btnUpdate.setText("\tUpdate shipment");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         btnDelete.setText("Delete shipment");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -83,12 +132,6 @@ public class ShipmentForm extends javax.swing.JFrame {
             }
         });
 
-        txtStatus.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtStatusActionPerformed(evt);
-            }
-        });
-
         tableShipments.setModel(new javax.swing.table.DefaultTableModel(
 
             new Object [][] {},
@@ -98,6 +141,17 @@ public class ShipmentForm extends javax.swing.JFrame {
 
         )    );
         jScrollPane1.setViewportView(tableShipments);
+
+        buttonGroup1.add(rbtnActive);
+        rbtnActive.setText("Active ");
+
+        buttonGroup1.add(rbtnInactive);
+        rbtnInactive.setText("Inactive");
+        rbtnInactive.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbtnInactiveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -112,7 +166,6 @@ public class ShipmentForm extends javax.swing.JFrame {
                             .addComponent(txtSender, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
                             .addComponent(txtReceiver)
                             .addComponent(txtContents)
-                            .addComponent(txtStatus)
                             .addComponent(txtEta))
                         .addGap(193, 193, 193))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -124,22 +177,28 @@ public class ShipmentForm extends javax.swing.JFrame {
                         .addGap(85, 85, 85)
                         .addComponent(btnView)
                         .addGap(137, 137, 137))))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(81, 81, 81)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(206, 206, 206))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(186, 186, 186)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(81, 81, 81)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel4)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(190, 190, 190)
+                                .addComponent(rbtnActive)
+                                .addGap(72, 72, 72)
+                                .addComponent(rbtnInactive))
+                            .addComponent(jLabel6)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(186, 186, 186)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -162,7 +221,8 @@ public class ShipmentForm extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(txtStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(rbtnActive)
+                    .addComponent(rbtnInactive))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -175,7 +235,7 @@ public class ShipmentForm extends javax.swing.JFrame {
                     .addComponent(btnView))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -194,20 +254,128 @@ public class ShipmentForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
+  if (!validateForm()) return;
+
+    String sender = txtSender.getText();
+    String receiver = txtReceiver.getText();
+    String contents = txtContents.getText();
+    String status = rbtnActive.isSelected() ? "Active" : "Inactive";
+    String eta = txtEta.getText();
+
+    try {
+        Connection conn = Backend.DBConnection.getConnection();
+        String sql = "INSERT INTO shipments(sender, receiver, contents, status, eta) VALUES (?, ?, ?, ?, ?)";
+        java.sql.PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setString(1, sender);
+        pst.setString(2, receiver);
+        pst.setString(3, contents);
+        pst.setString(4, status);
+        pst.setString(5, eta);
+        pst.executeUpdate();
+        javax.swing.JOptionPane.showMessageDialog(this, "✅ Shipment Added!");
+        conn.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+        javax.swing.JOptionPane.showMessageDialog(this, "❌ Failed to Add Shipment!");
+    }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
+        int row = tableShipments.getSelectedRow();
+    if (row == -1) {
+        javax.swing.JOptionPane.showMessageDialog(this, "⚠️ Select a shipment to delete.");
+        return;
+    }
+
+    int id = (int) tableShipments.getValueAt(row, 0);
+
+    try {
+        Connection conn = Backend.DBConnection.getConnection();
+        String query = "DELETE FROM shipments WHERE id=?";
+        java.sql.PreparedStatement pst = conn.prepareStatement(query);
+        pst.setInt(1, id);
+        pst.executeUpdate();
+        conn.close();
+
+        javax.swing.JOptionPane.showMessageDialog(this, "🗑️ Shipment deleted!");
+        btnViewActionPerformed(null);
+    } catch (Exception e) {
+        e.printStackTrace();
+        javax.swing.JOptionPane.showMessageDialog(this, "❌ Error deleting shipment!");
+    }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewActionPerformed
         // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tableShipments.getModel();
+    model.setRowCount(0);
+
+    try {
+        Connection conn = Backend.DBConnection.getConnection();
+        String query = "SELECT * FROM shipments";
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+
+        while (rs.next()) {
+            model.addRow(new Object[]{
+                rs.getInt("id"),
+                rs.getString("sender"),
+                rs.getString("receiver"),
+                rs.getString("contents"),
+                rs.getString("status"),
+                rs.getString("eta")
+            });
+        }
+        conn.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+        javax.swing.JOptionPane.showMessageDialog(this, "❌ Error loading shipments!");
+    }
     }//GEN-LAST:event_btnViewActionPerformed
 
-    private void txtStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStatusActionPerformed
+    private void rbtnInactiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnInactiveActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtStatusActionPerformed
+    }//GEN-LAST:event_rbtnInactiveActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
+     if (!validateForm()) return;
+
+    int row = tableShipments.getSelectedRow();
+    if (row == -1) {
+        javax.swing.JOptionPane.showMessageDialog(this, "⚠️ Select a shipment to update.");
+        return;
+    }
+
+
+    int id = (int) tableShipments.getValueAt(row, 0);
+    String sender = txtSender.getText();
+    String receiver = txtReceiver.getText();
+    String contents = txtContents.getText();
+    String status = rbtnActive.isSelected() ? "Active" : "Inactive";
+    String eta = txtEta.getText();
+
+    try {
+        Connection conn = Backend.DBConnection.getConnection();
+        String query = "UPDATE shipments SET sender=?, receiver=?, contents=?, status=?, eta=? WHERE id=?";
+        java.sql.PreparedStatement pst = conn.prepareStatement(query);
+        pst.setString(1, sender);
+        pst.setString(2, receiver);
+        pst.setString(3, contents);
+        pst.setString(4, status);
+        pst.setString(5, eta);
+        pst.setInt(6, id);
+        pst.executeUpdate();
+        conn.close();
+
+        javax.swing.JOptionPane.showMessageDialog(this, "✅ Shipment Updated!");
+        btnViewActionPerformed(null);
+    } catch (Exception e) {
+        e.printStackTrace();
+        javax.swing.JOptionPane.showMessageDialog(this, "❌ Update failed!");
+    }
+    }//GEN-LAST:event_btnUpdateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -249,6 +417,7 @@ public class ShipmentForm extends javax.swing.JFrame {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JButton btnView;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -257,11 +426,12 @@ public class ShipmentForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JRadioButton rbtnActive;
+    private javax.swing.JRadioButton rbtnInactive;
     private javax.swing.JTable tableShipments;
     private javax.swing.JTextField txtContents;
     private javax.swing.JTextField txtEta;
     private javax.swing.JTextField txtReceiver;
     private javax.swing.JTextField txtSender;
-    private javax.swing.JTextField txtStatus;
     // End of variables declaration//GEN-END:variables
 }
