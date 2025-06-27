@@ -155,12 +155,12 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Sender"/>
+            <Property name="text" type="java.lang.String" value="Sender Address"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Receiver"/>
+            <Property name="text" type="java.lang.String" value="Receiver Address"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
