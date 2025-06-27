@@ -4,6 +4,9 @@
  */
 package frontend;
 
+import java.net.URL;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author bijon
@@ -14,7 +17,16 @@ public class dashboard extends javax.swing.JFrame {
      * Creates new form dashboard
      */
     public dashboard() {
+               URL testUrl = getClass().getResource("/frontend/new_shipment_2_optimized.png");
+System.out.println("Image URL: " + testUrl);
+if (testUrl == null) {
+    System.err.println("Image not found! Check path and build configuration.");
+} else {
+    jLabel3.setIcon(new ImageIcon(testUrl));
+}
+
         initComponents();
+ 
     }
 
     /**
@@ -185,21 +197,23 @@ public class dashboard extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnShipments)
-                    .addComponent(btnTracking)
-                    .addComponent(btnDrivers)
-                    .addComponent(btnSchedule))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnTracking)
+                        .addComponent(btnDrivers)
+                        .addComponent(btnSchedule)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(jLabel8)
                     .addComponent(jLabel6))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnReports)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnNotifications)
-                    .addComponent(btnAssign))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnReports)
+                        .addComponent(btnAssign)))
                 .addGap(1, 1, 1)
                 .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())

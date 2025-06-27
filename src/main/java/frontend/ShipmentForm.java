@@ -94,9 +94,9 @@ public class ShipmentForm extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
         jLabel1.setText("Shipment Management");
 
-        jLabel2.setText("Sender");
+        jLabel2.setText("Sender Address");
 
-        jLabel3.setText("Receiver");
+        jLabel3.setText("Receiver Address");
 
         jLabel4.setText("Contents");
 
