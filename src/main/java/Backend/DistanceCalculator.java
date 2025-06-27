@@ -55,8 +55,8 @@ public class DistanceCalculator {
                                   .getJSONObject("duration").getString("text");
 
             // 📌 Store in result map
-            result.put("distance", distance);
-            result.put("duration", duration);
+            //result.put("distance", distance);
+            //result.put("duration", duration);
 
         } catch (Exception e) {
             // ⚠️ Log any error that occurs
