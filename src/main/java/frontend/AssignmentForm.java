@@ -145,24 +145,29 @@ private void assignDriver() {
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 204));
         jLabel2.setText("Shipment and Driver Assignment");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 20, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, -1, -1));
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI Emoji", 1, 14)); // NOI18N
         jLabel3.setText("Shipment ID");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(51, 87, -1, -1));
 
         comboShipment.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel1.add(comboShipment, new org.netbeans.lib.awtextra.AbsoluteConstraints(229, 84, 223, -1));
+        jPanel1.add(comboShipment, new org.netbeans.lib.awtextra.AbsoluteConstraints(212, 84, 240, -1));
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI Emoji", 1, 14)); // NOI18N
         jLabel4.setText(" Driver ID  ");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(51, 135, -1, -1));
 
         comboDriver.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel1.add(comboDriver, new org.netbeans.lib.awtextra.AbsoluteConstraints(229, 132, 223, -1));
+        jPanel1.add(comboDriver, new org.netbeans.lib.awtextra.AbsoluteConstraints(212, 132, 240, -1));
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI Emoji", 1, 14)); // NOI18N
         jLabel5.setText("Assignment Date ");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(51, 189, -1, -1));
-        jPanel1.add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(229, 183, 223, -1));
+        jPanel1.add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(212, 183, 240, -1));
 
         tableAssign.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -179,21 +184,31 @@ private void assignDriver() {
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 230, -1, 170));
 
+        btnAssign.setBackground(new java.awt.Color(102, 102, 255));
+        btnAssign.setFont(new java.awt.Font("Segoe UI Emoji", 1, 16)); // NOI18N
+        btnAssign.setForeground(new java.awt.Color(255, 255, 255));
         btnAssign.setText("Assign");
+        btnAssign.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        btnAssign.setBorderPainted(false);
         btnAssign.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAssignActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAssign, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 180, -1, -1));
+        jPanel1.add(btnAssign, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 170, 80, 30));
 
+        btnClear.setBackground(new java.awt.Color(102, 102, 255));
+        btnClear.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        btnClear.setForeground(new java.awt.Color(255, 255, 255));
         btnClear.setText("Clear");
+        btnClear.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        btnClear.setBorderPainted(false);
         btnClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnClearActionPerformed(evt);
             }
         });
-        jPanel1.add(btnClear, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 180, -1, -1));
+        jPanel1.add(btnClear, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 170, 80, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
