@@ -4,7 +4,9 @@
  */
 package frontend;
 
+import Backend.DBConnection;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.table.DefaultTableModel;
@@ -32,6 +34,8 @@ public class ShipmentForm extends javax.swing.JFrame {
    
     return true;
 }
+
+
 
 
     /**
