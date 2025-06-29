@@ -34,7 +34,6 @@ public class DriverForm extends javax.swing.JFrame {
     nictxt.setText("");
     pnumbertxt.setText("");
     emailtxt.setText("");
-    routeBox.setSelectedIndex(0);
     vehicletxt.setText("");
     buttonGroup1.clearSelection(); // group your radio buttons in NetBeans GUI
 }
@@ -90,11 +89,9 @@ public void loadTable() {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        routeBox = new javax.swing.JComboBox<>();
         fullnametxt = new javax.swing.JTextField();
         nictxt = new javax.swing.JTextField();
         pnumbertxt = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
         emailtxt = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         vehicletxt = new javax.swing.JTextField();
@@ -130,40 +127,34 @@ public void loadTable() {
         jLabel5.setText("Email Address");
         jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(43, 227, -1, -1));
 
-        routeBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel2.add(routeBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(541, 90, -1, -1));
-
         fullnametxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fullnametxtActionPerformed(evt);
             }
         });
-        jPanel2.add(fullnametxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(185, 90, 71, -1));
-        jPanel2.add(nictxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(185, 134, 71, -1));
-        jPanel2.add(pnumbertxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(185, 178, 71, -1));
-
-        jLabel6.setText("Assigned Route");
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(399, 95, -1, -1));
+        jPanel2.add(fullnametxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(185, 90, 120, -1));
+        jPanel2.add(nictxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(185, 134, 120, -1));
+        jPanel2.add(pnumbertxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(185, 178, 120, -1));
 
         emailtxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 emailtxtActionPerformed(evt);
             }
         });
-        jPanel2.add(emailtxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(185, 222, 71, -1));
+        jPanel2.add(emailtxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(185, 222, 120, -1));
 
         jLabel7.setText("Vehicle Number");
-        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(399, 155, -1, -1));
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 100, -1, -1));
 
         vehicletxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 vehicletxtActionPerformed(evt);
             }
         });
-        jPanel2.add(vehicletxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(541, 150, 71, -1));
+        jPanel2.add(vehicletxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 100, 71, -1));
 
         jLabel8.setText("Status");
-        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(399, 213, -1, -1));
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 140, -1, -1));
 
         driverTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -211,11 +202,16 @@ public void loadTable() {
         updatebtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         updatebtn.setForeground(new java.awt.Color(255, 255, 255));
         updatebtn.setText("UPDATE");
+        updatebtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updatebtnActionPerformed(evt);
+            }
+        });
         jPanel2.add(updatebtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 260, -1, -1));
 
         buttonGroup1.add(jRadioButton1);
         jRadioButton1.setText("Active");
-        jPanel2.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(516, 211, -1, -1));
+        jPanel2.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 140, -1, -1));
 
         buttonGroup1.add(jRadioButton2);
         jRadioButton2.setText("Inactive");
@@ -224,7 +220,7 @@ public void loadTable() {
                 jRadioButton2ActionPerformed(evt);
             }
         });
-        jPanel2.add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(591, 211, -1, -1));
+        jPanel2.add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 140, -1, -1));
 
         loadbtn.setBackground(new java.awt.Color(0, 0, 153));
         loadbtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -308,41 +304,56 @@ public void loadTable() {
     }//GEN-LAST:event_vehicletxtActionPerformed
 
     private void SubmitbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SubmitbtnActionPerformed
-    Submitbtn.addActionListener(e -> {
-    String name = fullnametxt.getText();
-    String phone = pnumbertxt.getText();
-    String license = nictxt.getText();
-    String address = emailtxt.getText();
-    String mail = emailtxt.getText();
+
+        String name = fullnametxt.getText().trim();
+    String phone = pnumbertxt.getText().trim();
+    String nic = nictxt.getText().trim();
+    String mail = emailtxt.getText().trim();
+    String vehicleno = vehicletxt.getText().trim();
+
+    String status = ""; // From radio buttons
+    if (jRadioButton1.isSelected()) {
+        status = "Active";
+    } else if (jRadioButton2.isSelected()) {
+        status = "Inactive";
+    }
 
     try {
-        if (name.isEmpty() || mail.isEmpty() || phone.isEmpty() || address.isEmpty() || (!jRadioButton1.isSelected() && !jRadioButton2.isSelected()) ) {
-        JOptionPane.showMessageDialog(null, "Please fill all fields ❗", "Validation", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-        // ✅ Use your reusable DB connection class
+        // Validation
+        if (name.isEmpty() || mail.isEmpty() || phone.isEmpty() || nic.isEmpty() || vehicleno.isEmpty() || status.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please fill all fields ❗", "Validation", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // ✅ Get connection
         Connection con = DBConnection.getConnection();
 
-        String sql = "INSERT INTO drivers (full_name, phone, nic_number, email) VALUES (?, ?, ?, ?)";
+        // ✅ SQL with all 7 columns (except auto-increment ID)
+        String sql = "INSERT INTO drivers (full_name, nic_number, phone, email, vehicle_number, status, created_at) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)";
+
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setString(1, name);
-        stmt.setString(2, phone);
-        stmt.setString(3, license);
-        stmt.setString(4, address);
+        stmt.setString(2, nic);
+        stmt.setString(3, phone);
+        stmt.setString(4, mail);
+        stmt.setString(5, vehicleno);
+        stmt.setString(6, status);
 
         int rows = stmt.executeUpdate();
         if (rows > 0) {
             JOptionPane.showMessageDialog(null, "✅ Driver added successfully!");
-            clearFields();  // Clear input fields
-            loadDrivers();  // Reload JTable if applicable
+            clearFields();  // Clear inputs
+            loadDrivers();  // Reload your JTable if exists
         }
 
-        con.close();  // Always close the connection
+        con.close(); // Always close
+
     } catch (Exception ex) {
         JOptionPane.showMessageDialog(null, "❌ Error: " + ex.getMessage());
-        ex.printStackTrace(); // Optional: print stack trace for debug
+        ex.printStackTrace();
     }
-});
+
     
     }//GEN-LAST:event_SubmitbtnActionPerformed
 
@@ -351,7 +362,7 @@ public void loadTable() {
     }//GEN-LAST:event_clearbtnActionPerformed
 
     private void loadbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadbtnActionPerformed
-        loadbtn.addActionListener(e -> loadTable());
+       loadTable();
 
     }//GEN-LAST:event_loadbtnActionPerformed
 
@@ -364,13 +375,24 @@ public void loadTable() {
     }//GEN-LAST:event_jRadioButton2ActionPerformed
 
     private void driverTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_driverTableMouseClicked
-     //   int selectedRow = tableShipments.getSelectedRow();
-    //if (selectedRow != -1) {
-  //      txtSender.setText(tableShipments.getValueAt(selectedRow, 1).toString());
-  //      txtReceiver.setText(tableShipments.getValueAt(selectedRow, 2).toString());
-  //      txtContents.setText(tableShipments.getValueAt(selectedRow, 3).toString());
-  ///      jComboBox1.setSelectedItem(tableShipments.getValueAt(selectedRow, 4).toString());
-   //     txtEta.setText(tableShipments.getValueAt(selectedRow, 5).toString());
+        // TODO add your handling code here:
+    int selectedRow = driverTable.getSelectedRow();
+    if (selectedRow != -1) {
+        fullnametxt.setText(driverTable.getValueAt(selectedRow, 1).toString());  // full_name
+        nictxt.setText(driverTable.getValueAt(selectedRow, 2).toString());      // nic_number
+        pnumbertxt.setText(driverTable.getValueAt(selectedRow, 3).toString());  // phone
+        emailtxt.setText(driverTable.getValueAt(selectedRow, 4).toString());    // email
+        vehicletxt.setText(driverTable.getValueAt(selectedRow, 5).toString());  // vehicle_number
+
+        // ✅ Set radio button for status
+        String status = driverTable.getValueAt(selectedRow, 6).toString();      // status
+        if (status.equalsIgnoreCase("Active")) {
+            jRadioButton1.setSelected(true);  // Active
+        } else {
+            jRadioButton2.setSelected(true);  // Inactive
+        }
+
+    }
     
     }//GEN-LAST:event_driverTableMouseClicked
 
@@ -403,6 +425,71 @@ public void loadTable() {
         new dashboard().setVisible(true); // Go back to dashboard
         this.dispose(); // Close current form
     }//GEN-LAST:event_BackActionPerformed
+
+    private void updatebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updatebtnActionPerformed
+    /// ✅ Get selected row index
+    int row = driverTable.getSelectedRow();
+    if (row == -1) {
+        JOptionPane.showMessageDialog(this, "⚠️ Please select a driver to update.");
+        return;
+    }
+
+    try {
+        // 🔑 Get ID of the selected driver (from column 0)
+        int driverId = (int) driverTable.getValueAt(row, 0);
+
+        // 📝 Get input values from form
+        String name = fullnametxt.getText().trim();
+        String nic = nictxt.getText().trim();
+        String phone = pnumbertxt.getText().trim();
+        String email = emailtxt.getText().trim();
+        String vehicleNo = vehicletxt.getText().trim();
+
+        // 🚦 Get status from radio buttons
+        String status = "";
+        if (jRadioButton1.isSelected()) {
+            status = "Active";
+        } else if (jRadioButton2.isSelected()) {
+            status = "Inactive";
+        }
+
+        // ⚠️ Validation
+        if (name.isEmpty() || nic.isEmpty() || phone.isEmpty() || email.isEmpty() || vehicleNo.isEmpty() || status.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "❗ Please fill in all fields.");
+            return;
+        }
+
+        // 🛠️ Update in DB
+        Connection conn = DBConnection.getConnection();
+        String sql = "UPDATE drivers SET full_name=?, nic_number=?, phone=?, email=?, vehicle_number=?, status=? WHERE driver_id=?";
+        PreparedStatement pst = conn.prepareStatement(sql);
+
+        pst.setString(1, name);
+        pst.setString(2, nic);
+        pst.setString(3, phone);
+        pst.setString(4, email);
+        pst.setString(5, vehicleNo);
+        pst.setString(6, status);
+        pst.setInt(7, driverId); // 🧠 Use selected row ID
+
+        int rowsAffected = pst.executeUpdate();
+        conn.close();
+
+        if (rowsAffected > 0) {
+            JOptionPane.showMessageDialog(this, "✅ Driver updated successfully!");
+            loadDrivers(); // 🔁 Refresh table (or call loadDrivers())
+        } else {
+            JOptionPane.showMessageDialog(this, "⚠️ No changes made or driver not found.");
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "❌ Failed to update driver.\n" + e.getMessage());
+    }
+
+
+
+    }//GEN-LAST:event_updatebtnActionPerformed
     
     /**
      * @param args the command line arguments
@@ -454,7 +541,6 @@ public void loadTable() {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -465,7 +551,6 @@ public void loadTable() {
     private javax.swing.JButton loadbtn;
     private javax.swing.JTextField nictxt;
     private javax.swing.JTextField pnumbertxt;
-    private javax.swing.JComboBox<String> routeBox;
     private javax.swing.JButton updatebtn;
     private javax.swing.JTextField vehicletxt;
     // End of variables declaration//GEN-END:variables

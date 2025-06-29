@@ -97,8 +97,8 @@ public class trackForm extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, 521, 275));
 
-        comboContents.setBackground(new java.awt.Color(0, 0, 102));
         comboContents.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        comboContents.setForeground(new java.awt.Color(255, 255, 255));
         comboContents.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboContentsActionPerformed(evt);
