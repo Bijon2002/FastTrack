@@ -7,6 +7,7 @@ import java.sql.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import Backend.DBConnection;
+import Backend.SimpleMailer;
 
 /**
  *
@@ -215,9 +216,63 @@ private void assignDriver() {
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnAssignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAssignActionPerformed
-        //public class SimpleMailer.sendEmail()
 
-        assignDriver();
+        int driverId = Integer.parseInt(comboDriver.getSelectedItem().toString());
+        int shipmentId = Integer.parseInt(comboShipment.getSelectedItem().toString());
+        String message="";
+        
+        
+        String email = null;
+
+    try {
+        Connection con = DBConnection.getConnection(); // Your DB connector
+        String sql = "SELECT email FROM drivers WHERE driver_id = ?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setInt(1, driverId);
+
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            email = rs.getString("email");
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "❌ Failed to get driver email.");
+    }
+    
+    try {
+        Connection con = DBConnection.getConnection();
+        String sql = "SELECT sender, receiver, distance, duration FROM shipments WHERE id = ?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setInt(1, shipmentId);
+
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            String sender = rs.getString("sender");
+            String receiver = rs.getString("receiver");
+            double distance = rs.getDouble("distance");
+            String duration = rs.getString("duration");
+
+            message = "📦 Shipment Details:\n"
+                    + "🚚 From: " + sender + "\n"
+                    + "📍 To: " + receiver + "\n"
+                    + "🛣️ Distance: " + distance + " km\n"
+                    + "⏱️ Estimated Delivery Time: " + duration;
+        } else {
+            System.out.println("❌ No shipment found with ID: " + shipmentId); 
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        message = "❌ Error fetching shipment data.";
+    }
+
+    assignDriver();
+    SimpleMailer.sendEmail(email, "Shipments Assingments", message);
+    
+
     }//GEN-LAST:event_btnAssignActionPerformed
 
     /**
