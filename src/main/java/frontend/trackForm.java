@@ -106,6 +106,8 @@ public class trackForm extends javax.swing.JFrame {
         jPanel1.add(comboContents, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, -1, -1));
 
         jButton2.setBackground(new java.awt.Color(0, 0, 102));
+        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Load");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
