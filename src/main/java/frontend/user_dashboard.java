@@ -65,6 +65,11 @@ public class user_dashboard extends javax.swing.JFrame {
         track.setText("Track");
         track.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         track.setBorderPainted(false);
+        track.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trackActionPerformed(evt);
+            }
+        });
 
         jButton1.setBackground(new java.awt.Color(153, 0, 0));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -168,6 +173,15 @@ public class user_dashboard extends javax.swing.JFrame {
         System.out.println("Book button clicked");
 
     }//GEN-LAST:event_bookActionPerformed
+
+    private void trackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trackActionPerformed
+        // TODO add your handling code here:
+        trackForm tr = new trackForm();
+        tr.setVisible(true);
+        this.dispose();
+
+        
+    }//GEN-LAST:event_trackActionPerformed
 
     /**
      * @param args the command line arguments
