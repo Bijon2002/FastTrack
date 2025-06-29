@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -21,10 +22,10 @@ public class ShipmentForm extends javax.swing.JFrame {
     String sender = txtSender.getText().trim();
     String receiver = txtReceiver.getText().trim();
     String contents = txtContents.getText().trim();
-    String eta = txtEta.getText().trim();
+    String type = typetxt.getText().trim();
     String status = (String) jComboBox1.getSelectedItem();
 
-    if (sender.isEmpty() || receiver.isEmpty() || contents.isEmpty() || eta.isEmpty() || status.isEmpty()) {
+    if (sender.isEmpty() || receiver.isEmpty() || contents.isEmpty() || type.isEmpty() || status.isEmpty()) {
         javax.swing.JOptionPane.showMessageDialog(this, "⚠️ All fields must be filled!");
         return false;
     }
@@ -61,41 +62,40 @@ public class ShipmentForm extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        btnAdd = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         btnView = new javax.swing.JButton();
         txtSender = new javax.swing.JTextField();
         txtReceiver = new javax.swing.JTextField();
         txtContents = new javax.swing.JTextField();
-        txtEta = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableShipments = new javax.swing.JTable();
         jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
+        typetxt = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 153));
         jLabel1.setText("Shipment Management");
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setText("Sender Address");
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setText("Receiver Address");
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel4.setText("Contents");
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel5.setText("Status");
 
-        jLabel6.setText("ETA (yyyy-mm-dd)");
-
-        btnAdd.setText("Add shipment");
-        btnAdd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPerformed(evt);
-            }
-        });
-
+        btnUpdate.setBackground(new java.awt.Color(0, 102, 255));
+        btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdate.setText("\tUpdate shipment");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -103,6 +103,9 @@ public class ShipmentForm extends javax.swing.JFrame {
             }
         });
 
+        btnDelete.setBackground(new java.awt.Color(0, 102, 255));
+        btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("Delete shipment");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -110,6 +113,9 @@ public class ShipmentForm extends javax.swing.JFrame {
             }
         });
 
+        btnView.setBackground(new java.awt.Color(0, 102, 255));
+        btnView.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnView.setForeground(new java.awt.Color(255, 255, 255));
         btnView.setText("Load all data");
         btnView.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -121,7 +127,7 @@ public class ShipmentForm extends javax.swing.JFrame {
 
             new Object [][] {},
             new String [] {
-                "ID", "Sender", "Receiver", "Contents", "Status", "ETA"
+                "ID", "Customer ID", "Sender", "Receiver", "Contents", "Type", "Distance (km)", "Duration", "Created At"
             }
 
         )    );
@@ -134,35 +140,22 @@ public class ShipmentForm extends javax.swing.JFrame {
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pending", "Recieved", "Canceled", "Failed Delivery" }));
 
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assest/shipment.png"))); // NOI18N
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel8.setText("Type");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(72, 72, 72)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnAdd)
-                        .addGap(56, 56, 56)
-                        .addComponent(btnUpdate)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
-                        .addComponent(btnDelete)
-                        .addGap(85, 85, 85)
-                        .addComponent(btnView)
-                        .addGap(137, 137, 137))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtSender, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
-                            .addComponent(txtReceiver)
-                            .addComponent(txtContents)
-                            .addComponent(txtEta)
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(193, 193, 193))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(206, 206, 206))
+                .addGap(0, 305, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtSender, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                    .addComponent(txtReceiver)
+                    .addComponent(txtContents))
+                .addGap(193, 193, 193))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -172,18 +165,41 @@ public class ShipmentForm extends javax.swing.JFrame {
                             .addComponent(jLabel2)
                             .addComponent(jLabel4)
                             .addComponent(jLabel5)
-                            .addComponent(jLabel6)))
+                            .addComponent(jLabel8))
+                        .addGap(127, 127, 127)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(typetxt, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(186, 186, 186)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(193, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnUpdate)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addGap(206, 206, 206))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(63, 63, 63)
+                        .addComponent(btnDelete)
+                        .addGap(64, 64, 64)
+                        .addComponent(btnView)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(jLabel1)
-                .addGap(45, 45, 45)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addComponent(jLabel1))
+                    .addComponent(jLabel7))
+                .addGap(42, 42, 42)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtSender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -195,23 +211,22 @@ public class ShipmentForm extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtContents, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(20, 20, 20)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(typetxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtEta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAdd)
                     .addComponent(btnUpdate)
                     .addComponent(btnDelete)
                     .addComponent(btnView))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -229,58 +244,9 @@ public class ShipmentForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-  if (!validateForm()) return;
-
-    String sender = txtSender.getText();
-    String receiver = txtReceiver.getText();
-    String contents = txtContents.getText();
-    String status = (String) jComboBox1.getSelectedItem();
-    String eta = txtEta.getText();
-
-    try {
-        Connection conn = Backend.DBConnection.getConnection();
-        String sql = "INSERT INTO shipments(sender, receiver, contents, status, eta) VALUES (?, ?, ?, ?, ?)";
-        java.sql.PreparedStatement pst = conn.prepareStatement(sql);
-        pst.setString(1, sender);
-        pst.setString(2, receiver);
-        pst.setString(3, contents);
-        pst.setString(4, status);
-        pst.setString(5, eta);
-        pst.executeUpdate();
-        javax.swing.JOptionPane.showMessageDialog(this, "✅ Shipment Added!");
-        conn.close();
-        btnViewActionPerformed(null); // Refresh table
-    } catch (Exception e) {
-        e.printStackTrace();
-        javax.swing.JOptionPane.showMessageDialog(this, "❌ Failed to Add Shipment!");
-    }
-    }//GEN-LAST:event_btnAddActionPerformed
-
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
-        int row = tableShipments.getSelectedRow();
-    if (row == -1) {
-        javax.swing.JOptionPane.showMessageDialog(this, "⚠️ Select a shipment to delete.");
-        return;
-    }
-
-    int id = (int) tableShipments.getValueAt(row, 0);
-
-    try {
-        Connection conn = Backend.DBConnection.getConnection();
-        String query = "DELETE FROM shipments WHERE id=?";
-        java.sql.PreparedStatement pst = conn.prepareStatement(query);
-        pst.setInt(1, id);
-        pst.executeUpdate();
-        conn.close();
-
-        javax.swing.JOptionPane.showMessageDialog(this, "🗑️ Shipment deleted!");
-        btnViewActionPerformed(null);
-    } catch (Exception e) {
-        e.printStackTrace();
-        javax.swing.JOptionPane.showMessageDialog(this, "❌ Error deleting shipment!");
-    }
+     
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewActionPerformed
@@ -297,11 +263,15 @@ public class ShipmentForm extends javax.swing.JFrame {
         while (rs.next()) {
             model.addRow(new Object[]{
                 rs.getInt("id"),
+                rs.getInt("customer_id"),
                 rs.getString("sender"),
                 rs.getString("receiver"),
                 rs.getString("contents"),
+                rs.getString("type"),
                 rs.getString("status"),
-                rs.getString("eta")
+                rs.getString("distance"),
+                rs.getString("duration"),
+       
             });
         }
         conn.close();
@@ -314,38 +284,51 @@ public class ShipmentForm extends javax.swing.JFrame {
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
       if (!validateForm()) return;
 
-    int row = tableShipments.getSelectedRow();
-    if (row == -1) {
-        javax.swing.JOptionPane.showMessageDialog(this, "⚠️ Select a shipment to update.");
-        return;
-    }
+// ✅ Get selected row index
+int row = tableShipments.getSelectedRow();
+if (row == -1) {
+    JOptionPane.showMessageDialog(this, "⚠️ Please select a shipment to update.");
+    return;
+}
 
+try {
+    // 🔑 Get ID of the selected shipment
     int id = (int) tableShipments.getValueAt(row, 0);
-    String sender = txtSender.getText();
-    String receiver = txtReceiver.getText();
-    String contents = txtContents.getText();
+
+    // 📝 Get input values
+    String sender = txtSender.getText().trim();
+    String receiver = txtReceiver.getText().trim();
+    String contents = txtContents.getText().trim();
     String status = (String) jComboBox1.getSelectedItem();
-    String eta = txtEta.getText();
+    String type = typetxt.getText().trim();
 
-    try {
-        Connection conn = Backend.DBConnection.getConnection();
-        String query = "UPDATE shipments SET sender=?, receiver=?, contents=?, status=?, eta=? WHERE id=?";
-        java.sql.PreparedStatement pst = conn.prepareStatement(query);
-        pst.setString(1, sender);
-        pst.setString(2, receiver);
-        pst.setString(3, contents);
-        pst.setString(4, status);
-        pst.setString(5, eta);
-        pst.setInt(6, id);
-        pst.executeUpdate();
-        conn.close();
+    // 🛠️ Update in DB
+    Connection conn = DBConnection.getConnection();
+    String sql = "UPDATE shipments SET sender=?, receiver=?, contents=?, status=?, type=? WHERE id=?";
+    PreparedStatement pst = conn.prepareStatement(sql);
 
-        javax.swing.JOptionPane.showMessageDialog(this, "✅ Shipment Updated!");
-        btnViewActionPerformed(null); // Refresh table
-    } catch (Exception e) {
-        e.printStackTrace();
-        javax.swing.JOptionPane.showMessageDialog(this, "❌ Update failed!");
+    pst.setString(1, sender);
+    pst.setString(2, receiver);
+    pst.setString(3, contents);
+    pst.setString(4, status);
+    pst.setString(5, type);
+    pst.setInt(6, id);
+
+    int rowsAffected = pst.executeUpdate();
+    conn.close();
+
+    if (rowsAffected > 0) {
+        JOptionPane.showMessageDialog(this, "✅ Shipment updated successfully!");
+        btnViewActionPerformed(null); // 🔁 Refresh table
+    } else {
+        JOptionPane.showMessageDialog(this, "⚠️ No changes made or shipment not found.");
     }
+
+} catch (Exception e) {
+    e.printStackTrace();
+    JOptionPane.showMessageDialog(this, "❌ Failed to update shipment.\n" + e.getMessage());
+}
+
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void tableShipmentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableShipmentsMouseClicked
@@ -356,7 +339,7 @@ public class ShipmentForm extends javax.swing.JFrame {
         txtReceiver.setText(tableShipments.getValueAt(selectedRow, 2).toString());
         txtContents.setText(tableShipments.getValueAt(selectedRow, 3).toString());
         jComboBox1.setSelectedItem(tableShipments.getValueAt(selectedRow, 4).toString());
-        txtEta.setText(tableShipments.getValueAt(selectedRow, 5).toString());
+        typetxt.setText(tableShipments.getValueAt(selectedRow, 5).toString());
     }
         
     }//GEN-LAST:event_tableShipmentsMouseClicked
@@ -397,7 +380,6 @@ public class ShipmentForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JButton btnView;
@@ -408,13 +390,14 @@ public class ShipmentForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tableShipments;
     private javax.swing.JTextField txtContents;
-    private javax.swing.JTextField txtEta;
     private javax.swing.JTextField txtReceiver;
     private javax.swing.JTextField txtSender;
+    private javax.swing.JTextField typetxt;
     // End of variables declaration//GEN-END:variables
 }
