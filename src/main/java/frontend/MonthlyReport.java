@@ -4,6 +4,13 @@
  */
 package frontend;
 
+import Backend.DBConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author KT
@@ -16,6 +23,44 @@ public class MonthlyReport extends javax.swing.JFrame {
     public MonthlyReport() {
         initComponents();
     }
+    private void loadMonthlyReport() {
+    int month = Integer.parseInt(comboMonth.getSelectedItem().toString());
+    int year = Integer.parseInt(comboYear.getSelectedItem().toString());
+
+    try (Connection con = DBConnection.getConnection()) {
+        String sql = "SELECT id, customer_id, sender, receiver, contents, type, distance, duration, created_at " +
+                     "FROM shipments WHERE MONTH(created_at) = ? AND YEAR(created_at) = ?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setInt(1, month);
+        stmt.setInt(2, year);
+        ResultSet rs = stmt.executeQuery();
+
+        DefaultTableModel model = new DefaultTableModel(
+            new String[] {"Shipment ID", "Customer ID", "Sender", "Receiver", "Contents","Type","Distance (km)", "Duration", "Date"}, 0
+        );
+
+        while (rs.next()) {
+            model.addRow(new Object[]{
+                rs.getInt("id"),
+                rs.getInt("customer_id"),
+                rs.getString("sender"),
+                rs.getString("receiver"),
+                rs.getString("contents"),
+                rs.getString("type"),
+                rs.getDouble("distance"),
+                rs.getString("duration"),
+                rs.getDate("created_at").toString()
+            });
+        }
+
+        tableReport.setModel(model);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "❌ Failed to load report.");
+    }
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,34 +72,64 @@ public class MonthlyReport extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        comboMonth = new javax.swing.JComboBox<>();
+        comboYear = new javax.swing.JComboBox<>();
+        btnLoadReport = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableReport = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(730, 467));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 746, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 455, Short.MAX_VALUE)
-        );
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        comboMonth.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Month", "01", "02", "03", "04", "05", "06",
+            "07", "08", "09", "10", "11", "12" }));
+jPanel1.add(comboMonth, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 104, -1, -1));
 
-        pack();
+comboYear.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {  "Select Year", "2024", "2025", "2026"}));
+jPanel1.add(comboYear, new org.netbeans.lib.awtextra.AbsoluteConstraints(144, 104, -1, -1));
+
+btnLoadReport.setText("LOAD");
+btnLoadReport.addActionListener(new java.awt.event.ActionListener() {
+    public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnLoadReportActionPerformed(evt);
+    }
+    });
+    jPanel1.add(btnLoadReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(264, 104, -1, -1));
+
+    tableReport.setModel(new javax.swing.table.DefaultTableModel(
+        new Object [][] {
+            {null, null, null, null},
+            {null, null, null, null},
+            {null, null, null, null},
+            {null, null, null, null}
+        },
+        new String [] {
+            "Shipment ID", "Customer ID", "Sender", "Receiver", "Contents", "Distance (km)", "Duration", "Date"
+        }
+    ));
+    jScrollPane1.setViewportView(tableReport);
+
+    jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 164, 676, -1));
+
+    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+    getContentPane().setLayout(layout);
+    layout.setHorizontalGroup(
+        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+    );
+    layout.setVerticalGroup(
+        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+    );
+
+    pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnLoadReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadReportActionPerformed
+        loadMonthlyReport();
+    }//GEN-LAST:event_btnLoadReportActionPerformed
 
     /**
      * @param args the command line arguments
@@ -92,6 +167,11 @@ public class MonthlyReport extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLoadReport;
+    private javax.swing.JComboBox<String> comboMonth;
+    private javax.swing.JComboBox<String> comboYear;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tableReport;
     // End of variables declaration//GEN-END:variables
 }

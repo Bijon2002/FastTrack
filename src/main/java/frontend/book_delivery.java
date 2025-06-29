@@ -136,89 +136,94 @@ System.out.println("Welcome ID: " + customerId + " | Name: " + customerName);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       String receiverAddress = reciever.getText().trim();
-        String contentDetails = contents.getText().trim();
-        String type = typetxt.getText().trim();
+  String receiverAddress = reciever.getText().trim();
+  String contentDetails = contents.getText().trim();
+  String type = typetxt.getText().trim();
 
-        if (receiverAddress.isEmpty() || contentDetails.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "⚠️ All fields must be filled!", "Validation Error", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+  if (receiverAddress.isEmpty() || contentDetails.isEmpty()) {
+      JOptionPane.showMessageDialog(this, "⚠️ All fields must be filled!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+      return;
+  }
 
-        try {
-            int customerId = SessionManager.getCustomerId();
-            Connection conn = DBConnection.getConnection();
+  try {
+      int customerId = SessionManager.getCustomerId();
+      Connection conn = DBConnection.getConnection();
 
-            // 🔍 Get sender address from customer table
-            String senderAddress = "";
-            String fetchQuery = "SELECT address FROM customers WHERE customer_id = ?";
-            PreparedStatement pstFetch = conn.prepareStatement(fetchQuery);
-            pstFetch.setInt(1, customerId);
-            ResultSet rs = pstFetch.executeQuery();
+      // 🔍 Get sender address from customer table
+      String senderAddress = "";
+      String fetchQuery = "SELECT address FROM customers WHERE customer_id = ?";
+      PreparedStatement pstFetch = conn.prepareStatement(fetchQuery);
+      pstFetch.setInt(1, customerId);
+      ResultSet rs = pstFetch.executeQuery();
 
-            if (rs.next()) {
-                senderAddress = rs.getString("address");
-            } else {
-                JOptionPane.showMessageDialog(this, "❌ Customer not found!", "Error", JOptionPane.ERROR_MESSAGE);
-                conn.close();
-                return;
-            }
-            
-            Map<String, String> Newmap = getDistanceAndTime(senderAddress, receiverAddress );
-            
-            String distance =Newmap.get("distance");
-            String duration =Newmap.get("duration");
-            String cleanedDistance = distance.replace("km", "").trim();
-            double dist = Double.parseDouble(cleanedDistance);
-            String estimatedTimeFormatted = "00:" + duration.replace("mins", "").trim() + ":00";
-            
-            
-            String sql = "INSERT INTO shipments (customer_id, sender, receiver, contents, type, distance, duration) "
-           + "VALUES (?, ?, ?, ?, ?, ?, ?)"; // Only 7 values!
+      if (rs.next()) {
+          senderAddress = rs.getString("address");
+      } else {
+          JOptionPane.showMessageDialog(this, "❌ Customer not found!", "Error", JOptionPane.ERROR_MESSAGE);
+          conn.close();
+          return;
+      }
 
-                PreparedStatement stmt = conn.prepareStatement(sql);
+      // 🌐 Get distance and time using API
+      Map<String, String> Newmap = getDistanceAndTime(senderAddress, receiverAddress);
+      String distance = Newmap.get("distance");
+      String duration = Newmap.get("duration");
 
-                    stmt.setInt(1, customerId);
-                    stmt.setString(2, senderAddress);
-                    stmt.setString(3, receiverAddress);
-                    stmt.setString(4, contentDetails);
-                    stmt.setString(5, type);
-                    stmt.setDouble(6, dist);                    // ✅ correct index
-                    stmt.setString(7, estimatedTimeFormatted);  // ✅ correct index
+      String cleanedDistance = distance.replace("km", "").trim();
+      double dist = Double.parseDouble(cleanedDistance);
+      String estimatedTimeFormatted = "00:" + duration.replace("mins", "").trim() + ":00";
 
-            stmt.executeUpdate();                       // ✅ use correct variable
+      // ✅ Insert shipment into database
+      String sql = "INSERT INTO shipments (customer_id, sender, receiver, contents, type, distance, duration) "
+                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+      PreparedStatement stmt = conn.prepareStatement(sql);
+      stmt.setInt(1, customerId);
+      stmt.setString(2, senderAddress);
+      stmt.setString(3, receiverAddress);
+      stmt.setString(4, contentDetails);
+      stmt.setString(5, type);
+      stmt.setDouble(6, dist);
+      stmt.setString(7, estimatedTimeFormatted);
+      stmt.executeUpdate();
 
-            JOptionPane.showMessageDialog(this, "✅ Delivery booked successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            reciever.setText("");
-            contents.setText("");
+      JOptionPane.showMessageDialog(this, "✅ Delivery booked successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+      reciever.setText("");
+      contents.setText("");
 
-            conn.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "❌ Failed to book delivery!\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        
-        String email="";
-        
-        try {
-        int customerId = SessionManager.getCustomerId();
-        Connection con = DBConnection.getConnection();
-        String sql = "SELECT email FROM customers WHERE id = ?";
-        PreparedStatement stmt = con.prepareStatement(sql);
-        stmt.setInt(1, customerId);
+      conn.close();
 
-        ResultSet rs = stmt.executeQuery();
+      // ✅ Get customer email
+      String email = "";
+      Connection con = DBConnection.getConnection();
+      String emailQuery = "SELECT email FROM customers WHERE customer_id = ?";
+      PreparedStatement emailStmt = con.prepareStatement(emailQuery);
+      emailStmt.setInt(1, customerId);
+      ResultSet emailRS = emailStmt.executeQuery();
+      if (emailRS.next()) {
+          email = emailRS.getString("email");
+      }
 
-        if (rs.next()) {
-            email = rs.getString("email");
-        }
+      // ✅ Build confirmation message
+      String message = "📦 Order Confirmation\n"
+                     + "🚚 From: " + senderAddress + "\n"
+                     + "📍 To: " + receiverAddress + "\n"
+                     + "📄 Contents: " + contentDetails + "\n"
+                     + "🛣️ Distance: " + distance + "\n"
+                     + "⏱️ Estimated Time: " + duration + "\n"
+                     + "🎉 Your order is on the way!";
 
-    } catch (Exception e) {
-        e.printStackTrace();
-        System.out.println("❌ Customer email not found.");
-    }
-        
-    SimpleMailer.sendEmail(email, "Order Confirmed", "Order is on the way");
+      // ✅ Send email
+      if (!email.isEmpty()) {
+          SimpleMailer.sendEmail(email, "📦 Order Confirmed", message);
+      } else {
+          System.out.println("❌ Email not found for customer.");
+      }
+
+  } catch (Exception e) {
+      e.printStackTrace();
+      JOptionPane.showMessageDialog(this, "❌ Failed to book delivery!\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+  }
+
                
     }//GEN-LAST:event_jButton1ActionPerformed
 
