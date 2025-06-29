@@ -5,6 +5,7 @@
 package frontend;
 
 import Backend.DBConnection;
+import backend.SessionManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -77,6 +78,10 @@ public class MonthlyReport extends javax.swing.JFrame {
         btnLoadReport = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableReport = new javax.swing.JTable();
+        Back = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(730, 467));
@@ -85,18 +90,31 @@ public class MonthlyReport extends javax.swing.JFrame {
 
         comboMonth.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Month", "01", "02", "03", "04", "05", "06",
             "07", "08", "09", "10", "11", "12" }));
-jPanel1.add(comboMonth, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 104, -1, -1));
-
-comboYear.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {  "Select Year", "2024", "2025", "2026"}));
-jPanel1.add(comboYear, new org.netbeans.lib.awtextra.AbsoluteConstraints(144, 104, -1, -1));
-
-btnLoadReport.setText("LOAD");
-btnLoadReport.addActionListener(new java.awt.event.ActionListener() {
+comboMonth.addActionListener(new java.awt.event.ActionListener() {
     public void actionPerformed(java.awt.event.ActionEvent evt) {
-        btnLoadReportActionPerformed(evt);
+        comboMonthActionPerformed(evt);
     }
     });
-    jPanel1.add(btnLoadReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(264, 104, -1, -1));
+    jPanel1.add(comboMonth, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 230, -1));
+
+    comboYear.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {  "Select Year", "2024", "2025", "2026"}));
+    comboYear.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            comboYearActionPerformed(evt);
+        }
+    });
+    jPanel1.add(comboYear, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 70, 210, -1));
+
+    btnLoadReport.setBackground(new java.awt.Color(0, 0, 153));
+    btnLoadReport.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+    btnLoadReport.setForeground(new java.awt.Color(255, 255, 255));
+    btnLoadReport.setText("LOAD");
+    btnLoadReport.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            btnLoadReportActionPerformed(evt);
+        }
+    });
+    jPanel1.add(btnLoadReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 70, 90, 30));
 
     tableReport.setModel(new javax.swing.table.DefaultTableModel(
         new Object [][] {
@@ -111,7 +129,40 @@ btnLoadReport.addActionListener(new java.awt.event.ActionListener() {
     ));
     jScrollPane1.setViewportView(tableReport);
 
-    jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 164, 676, -1));
+    jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 650, 290));
+
+    Back.setBackground(new java.awt.Color(0, 102, 0));
+    Back.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+    Back.setForeground(new java.awt.Color(255, 255, 255));
+    Back.setText("Back");
+    Back.setBorder(null);
+    Back.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            BackActionPerformed(evt);
+        }
+    });
+    jPanel1.add(Back, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 80, 40));
+
+    jButton1.setText("Generate as CSV file");
+    jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 390, -1, -1));
+
+    jButton4.setBackground(new java.awt.Color(153, 0, 0));
+    jButton4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+    jButton4.setForeground(new java.awt.Color(255, 255, 255));
+    jButton4.setText("Logout");
+    jButton4.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+    jButton4.setBorderPainted(false);
+    jButton4.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jButton4ActionPerformed(evt);
+        }
+    });
+    jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 390, 77, 40));
+
+    jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+    jLabel1.setForeground(new java.awt.Color(0, 0, 153));
+    jLabel1.setText("Monthly Reports ");
+    jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 10, -1, -1));
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
@@ -125,11 +176,34 @@ btnLoadReport.addActionListener(new java.awt.event.ActionListener() {
     );
 
     pack();
+    setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoadReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadReportActionPerformed
         loadMonthlyReport();
     }//GEN-LAST:event_btnLoadReportActionPerformed
+
+    private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
+        // TODO add your handling code here:
+        new dashboard().setVisible(true); // Go back to dashboard
+        this.dispose(); // Close current form
+    }//GEN-LAST:event_BackActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        SessionManager.logout();
+        new login().setVisible(true);
+        this.dispose();
+        System.out.println("Logged out successfully.");
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void comboMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboMonthActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboMonthActionPerformed
+
+    private void comboYearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboYearActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboYearActionPerformed
 
     /**
      * @param args the command line arguments
@@ -167,9 +241,13 @@ btnLoadReport.addActionListener(new java.awt.event.ActionListener() {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Back;
     private javax.swing.JButton btnLoadReport;
     private javax.swing.JComboBox<String> comboMonth;
     private javax.swing.JComboBox<String> comboYear;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tableReport;

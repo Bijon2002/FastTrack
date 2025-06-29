@@ -83,6 +83,11 @@ public class dashboard extends javax.swing.JFrame {
         btnAssign.setForeground(new java.awt.Color(255, 255, 255));
         btnAssign.setText("Assign Drivers");
         btnAssign.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnAssign.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAssignActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnAssign, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 350, 137, -1));
 
         btnReports.setBackground(new java.awt.Color(0, 0, 153));
@@ -141,14 +146,24 @@ public class dashboard extends javax.swing.JFrame {
 
     private void btnShipmentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShipmentsActionPerformed
         // TODO add your handling code here:
+        ShipmentForm sh = new ShipmentForm();
+          sh.setVisible(true);
+        this.dispose();
+
     }//GEN-LAST:event_btnShipmentsActionPerformed
 
     private void btnDriversActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDriversActionPerformed
         // TODO add your handling code here:
+        DriverForm df = new DriverForm();
+          df.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnDriversActionPerformed
 
     private void btnReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportsActionPerformed
         // TODO add your handling code here:
+        MonthlyReport mr = new MonthlyReport();
+          mr.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnReportsActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -158,6 +173,14 @@ public class dashboard extends javax.swing.JFrame {
         this.dispose();
         System.out.println("Logged out successfully.");
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void btnAssignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAssignActionPerformed
+        // TODO add your handling code here:
+          AssignmentForm dr = new AssignmentForm();
+          dr.setVisible(true);
+        this.dispose();
+        
+    }//GEN-LAST:event_btnAssignActionPerformed
 
     /**
      * @param args the command line arguments
