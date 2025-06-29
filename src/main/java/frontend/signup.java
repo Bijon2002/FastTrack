@@ -89,6 +89,12 @@ public class signup extends javax.swing.JFrame {
             }
         });
 
+        phone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                phoneActionPerformed(evt);
+            }
+        });
+
         jLabel7.setFont(new java.awt.Font("Segoe UI Emoji", 1, 16)); // NOI18N
         jLabel7.setText("Password");
 
@@ -253,6 +259,10 @@ public class signup extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "🚨 Error: " + e.getMessage());
     }
     }//GEN-LAST:event_submitActionPerformed
+
+    private void phoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_phoneActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_phoneActionPerformed
 
     /**
      * @param args the command line arguments
