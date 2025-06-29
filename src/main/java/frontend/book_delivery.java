@@ -4,12 +4,15 @@
  */
 package frontend;
 import Backend.DBConnection;
+import Backend.DistanceCalculator;
+import static Backend.DistanceCalculator.getDistanceAndTime;
 import backend.SessionManager;
-
-
-import java.sql.Connection;
+import static java.awt.geom.Point2D.distance;
 import java.sql.PreparedStatement;
+import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.Map;
+import static java.util.Map.entry;
 import javax.swing.JOptionPane;
 
 /**
@@ -29,7 +32,7 @@ public class book_delivery extends javax.swing.JFrame {
         
         initComponents();
         int customerId = SessionManager.getCustomerId();
-String customerName = SessionManager.getCustomerName();
+        String customerName = SessionManager.getCustomerName();
 
 // Optional: Display or use
 System.out.println("Welcome ID: " + customerId + " | Name: " + customerName);
@@ -51,6 +54,8 @@ System.out.println("Welcome ID: " + customerId + " | Name: " + customerName);
         reciever = new javax.swing.JTextField();
         contents = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        typetxt = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -71,6 +76,14 @@ System.out.println("Welcome ID: " + customerId + " | Name: " + customerName);
             }
         });
 
+        jLabel3.setText("Package Type");
+
+        typetxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                typetxtActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -81,13 +94,15 @@ System.out.println("Welcome ID: " + customerId + " | Name: " + customerName);
                         .addGap(103, 103, 103)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
-                            .addComponent(jLabel2))
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
                         .addGap(140, 140, 140)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(reciever, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
-                            .addComponent(contents)))
+                            .addComponent(contents)
+                            .addComponent(typetxt)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(269, 269, 269)
+                        .addGap(272, 272, 272)
                         .addComponent(jButton1)))
                 .addContainerGap(212, Short.MAX_VALUE))
         );
@@ -102,9 +117,13 @@ System.out.println("Welcome ID: " + customerId + " | Name: " + customerName);
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(contents, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(63, 63, 63)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(typetxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(34, 34, 34)
                 .addComponent(jButton1)
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addGap(49, 49, 49))
         );
 
         pack();
@@ -113,6 +132,7 @@ System.out.println("Welcome ID: " + customerId + " | Name: " + customerName);
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        String receiverAddress = reciever.getText().trim();
         String contentDetails = contents.getText().trim();
+        String type = typetxt.getText().trim();
 
         if (receiverAddress.isEmpty() || contentDetails.isEmpty()) {
             JOptionPane.showMessageDialog(this, "⚠️ All fields must be filled!", "Validation Error", JOptionPane.WARNING_MESSAGE);
@@ -138,16 +158,29 @@ System.out.println("Welcome ID: " + customerId + " | Name: " + customerName);
                 return;
             }
             
-            // code for distance Backend.DistanceCalculator.getDistanceAndTime(senderAddress, receiverAddress );
+            Map<String, String> Newmap = getDistanceAndTime(senderAddress, receiverAddress );
             
-            // 📦 Insert into shipments table
-            String insertQuery = "INSERT INTO shipments (sender, receiver, contents, status, eta) VALUES (?, ?, ?, 'Pending', NULL)";
-            PreparedStatement pstInsert = conn.prepareStatement(insertQuery);
-            pstInsert.setString(1, senderAddress);
-            pstInsert.setString(2, receiverAddress);
-            pstInsert.setString(3, contentDetails);
+            String distance =Newmap.get("distance");
+            String duration =Newmap.get("duration");
+            String cleanedDistance = distance.replace("km", "").trim();
+            double dist = Double.parseDouble(cleanedDistance);
+            String estimatedTimeFormatted = "00:" + duration.replace("mins", "").trim() + ":00";
+            
+            
+            String sql = "INSERT INTO shipments (customer_id, sender, receiver, contents, type, distance, duration) "
+           + "VALUES (?, ?, ?, ?, ?, ?, ?)"; // Only 7 values!
 
-            pstInsert.executeUpdate();
+                PreparedStatement stmt = conn.prepareStatement(sql);
+
+                    stmt.setInt(1, customerId);
+                    stmt.setString(2, senderAddress);
+                    stmt.setString(3, receiverAddress);
+                    stmt.setString(4, contentDetails);
+                    stmt.setString(5, type);
+                    stmt.setDouble(6, dist);                    // ✅ correct index
+                    stmt.setString(7, estimatedTimeFormatted);  // ✅ correct index
+
+            stmt.executeUpdate();                       // ✅ use correct variable
 
             JOptionPane.showMessageDialog(this, "✅ Delivery booked successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
             reciever.setText("");
@@ -163,6 +196,10 @@ System.out.println("Welcome ID: " + customerId + " | Name: " + customerName);
     private void recieverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recieverActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_recieverActionPerformed
+
+    private void typetxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typetxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_typetxtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -202,6 +239,8 @@ System.out.println("Welcome ID: " + customerId + " | Name: " + customerName);
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField reciever;
+    private javax.swing.JTextField typetxt;
     // End of variables declaration//GEN-END:variables
 }

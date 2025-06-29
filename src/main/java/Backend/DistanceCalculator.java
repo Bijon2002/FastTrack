@@ -30,71 +30,83 @@ public class DistanceCalculator {
      * @return Map with keys: "distance" and "duration"
      */
     public static Map<String, String> getDistanceAndTime(String origin, String destination) {
-        Map<String, String> result = new HashMap<>();
+    Map<String, String> result = new HashMap<>();
 
-        try {
-            // 🌐 Create the API request URL with proper encoding
-            String url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric"
-                    + "&origins=" + URLEncoder.encode(origin, "UTF-8")
-                    + "&destinations=" + URLEncoder.encode(destination, "UTF-8")
-                    + "&key=" + API_KEY;
+    try {
+        String url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric"
+                + "&origins=" + URLEncoder.encode(origin, "UTF-8")
+                + "&destinations=" + URLEncoder.encode(destination, "UTF-8")
+                + "&key=" + API_KEY;
 
-            // 📡 Send the HTTP GET request using OkHttp
-            OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder().url(url).build();
-            Response response = client.newCall(request).execute();
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(url).build();
+        Response response = client.newCall(request).execute();
 
-            // 📥 Get the JSON response from the API
-            String jsonData = response.body().string();
-            JSONObject json = new JSONObject(jsonData);
+        String jsonData = response.body().string();
+        JSONObject json = new JSONObject(jsonData);
 
-            // 📏 Extract the distance string (e.g., "118 km")
-            String distance = json.getJSONArray("rows").getJSONObject(0)
-                                  .getJSONArray("elements").getJSONObject(0)
-                                  .getJSONObject("distance").getString("text");
+        JSONObject element = json.getJSONArray("rows")
+                                 .getJSONObject(0)
+                                 .getJSONArray("elements")
+                                 .getJSONObject(0);
 
-            // ⏱️ Extract the duration string (e.g., "2 hours 15 mins")
-            String duration = json.getJSONArray("rows").getJSONObject(0)
-                                  .getJSONArray("elements").getJSONObject(0)
-                                  .getJSONObject("duration").getString("text");
+        String status = element.getString("status");
 
-            
-            
-            // 📌 Store in result map
-            result.put("distance", distance);
-            result.put("duration", duration);
-            
-            
-            String cleanDistance = distance.replace("km", "").trim();
-            double distance2 = Double.parseDouble(cleanDistance);
-            // Convert to MySQL time format: "00:24:00"
-            String estimatedTimeFormatted = "00:" + duration.replace("mins", "").trim() + ":00";
-            
-            
-            Connection con = DBConnection.getConnection(); // ✅ Your custom DB connection class
+        if (!status.equals("OK")) {
+            System.err.println("🚫 Google Maps API returned status: " + status);
+            JOptionPane.showMessageDialog(null, "❌ Invalid address. Please check sender and receiver.");
+            return result;
+        }
 
+        // ✅ Extract distance & duration
+        String distance = element.getJSONObject("distance").getString("text"); // e.g., "118 km"
+        String duration = element.getJSONObject("duration").getString("text"); // e.g., "2 hours 15 mins"
+
+        result.put("distance", distance);
+        result.put("duration", duration);
+
+        // ✅ Clean distance for DB
+        String cleanDistance = distance.replace("km", "").trim();
+        double distanceValue = Double.parseDouble(cleanDistance);
+
+        // ✅ Convert duration to HH:mm:ss
+        int hours = 0, minutes = 0;
+        if (duration.contains("hour")) {
+            hours = Integer.parseInt(duration.split("hour")[0].trim());
+            if (duration.contains("mins")) {
+                String minsPart = duration.split("hour")[1].replace("mins", "").trim();
+                minutes = Integer.parseInt(minsPart);
+            }
+        } else {
+            minutes = Integer.parseInt(duration.replace("mins", "").trim());
+        }
+
+        String estimatedTimeFormatted = String.format("%02d:%02d:00", hours, minutes); // e.g., "02:15:00"
+
+        // ✅ Insert into DB
+        Connection con = DBConnection.getConnection();
         String sql = "INSERT INTO routes (destination, distance, estimated_time) VALUES (?, ?, ?)";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setString(1, destination);
-        stmt.setDouble(2, distance2);
+        stmt.setDouble(2, distanceValue);
         stmt.setString(3, estimatedTimeFormatted);
-            
+
         int rows = stmt.executeUpdate();
         if (rows > 0) {
             JOptionPane.showMessageDialog(null, "✅ Route added successfully!");
-        }   
-            
-            
-
-        } catch (Exception e) {
-            // ⚠️ Log any error that occurs
-            e.printStackTrace();
         }
 
-        return result;
+    } catch (Exception e) {
+        e.printStackTrace(); // ✅ For debugging
+        JOptionPane.showMessageDialog(null, "❌ Error while calculating route.");
     }
+
+    return result;
+}
+}
+
     
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         // 🔍 Replace with your test locations
         String origin = "";
         String destination = "";
@@ -113,4 +125,4 @@ public class DistanceCalculator {
         
     }
     
-}
+}*/
