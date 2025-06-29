@@ -11,36 +11,54 @@ public class splashscreen extends javax.swing.JFrame {
         startLoading();
     }
 
-    private void startLoading() {
-        new Thread(() -> {
-            int dotCount = 0;
+   private void startLoading() {
+    new Thread(() -> {
+        int dotCount = 0;
 
-            for (int i = 0; i <= 100; i++) {
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                // Update percentage (left)
-                jLabel1.setText(i + "%");
-
-                // Animate loading dots (right)
-                dotCount = (dotCount + 1) % 7; // cycle 0 to 6
-                StringBuilder dotsBuilder = new StringBuilder();
-                for (int j = 0; j < dotCount; j++) {
-                    dotsBuilder.append(".");
-                }
-                jLabel2.setText("Loading" + dotsBuilder);
-
-                // Progress bar
-                jProgressBar1.setValue(i);
+        for (int i = 0; i <= 100; i++) {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
-            dispose(); // close splash screen
-            // new LoginPage().setVisible(true); // open next window if needed
-        }).start();
-    }
+            // Update percentage (left)
+            jLabel1.setText(i + "%");
+
+            // Animate loading dots
+            dotCount = (dotCount + 1) % 4;
+            StringBuilder dots = new StringBuilder();
+            for (int j = 0; j < dotCount; j++) {
+                dots.append(".");
+            }
+
+            // Change loading message based on progress
+            String loadingMessage;
+            if (i < 20) {
+                loadingMessage = "Initializing modules";
+            } else if (i < 40) {
+                loadingMessage = "Connecting to database";
+            } else if (i < 55) {
+                loadingMessage = "Loading resources";
+            } else if (i < 70) {
+                loadingMessage = "Optimizing assets";
+            } else if (i < 90) {
+                loadingMessage = "Finalizing setup";
+            } else {
+                loadingMessage = "Launching...";
+            }
+
+            jLabel2.setText(loadingMessage + dots);
+
+            // Progress bar
+            jProgressBar1.setValue(i);
+        }
+
+        dispose(); // close splash screen
+        // new LoginPage().setVisible(true);
+    }).start();
+}
+
 
                 /**
                  * This method is called from within the constructor to initialize the form.
@@ -64,8 +82,10 @@ public class splashscreen extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(766, 427));
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setText("0%");
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setText("loading....");
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assest/loadingpage.png"))); // NOI18N
@@ -75,23 +95,23 @@ public class splashscreen extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 766, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(219, 219, 219)
+                .addGap(193, 193, 193)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(180, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(55, 55, 55)
+                .addGap(54, 54, 54)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))

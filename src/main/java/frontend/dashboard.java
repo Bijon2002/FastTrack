@@ -39,14 +39,23 @@ public class dashboard extends javax.swing.JFrame {
         btnReports = new javax.swing.JButton();
         btnNotifications = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 153));
         jLabel1.setText("FastTrack Logistics - Dashboard");
 
+        btnShipments.setBackground(new java.awt.Color(51, 51, 255));
         btnShipments.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnShipments.setForeground(new java.awt.Color(255, 255, 255));
         btnShipments.setText("Manage Shipments");
         btnShipments.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnShipments.addActionListener(new java.awt.event.ActionListener() {
@@ -55,19 +64,37 @@ public class dashboard extends javax.swing.JFrame {
             }
         });
 
+        btnDrivers.setBackground(new java.awt.Color(51, 51, 255));
         btnDrivers.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnDrivers.setForeground(new java.awt.Color(255, 255, 255));
         btnDrivers.setText("Manage Drivers\t");
         btnDrivers.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnDrivers.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDriversActionPerformed(evt);
+            }
+        });
 
+        btnAssign.setBackground(new java.awt.Color(51, 51, 255));
         btnAssign.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnAssign.setForeground(new java.awt.Color(255, 255, 255));
         btnAssign.setText("Assign Drivers");
         btnAssign.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        btnReports.setBackground(new java.awt.Color(51, 51, 255));
         btnReports.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnReports.setForeground(new java.awt.Color(255, 255, 255));
         btnReports.setText("Monthly Reports");
         btnReports.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnReports.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReportsActionPerformed(evt);
+            }
+        });
 
+        btnNotifications.setBackground(new java.awt.Color(51, 51, 255));
         btnNotifications.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnNotifications.setForeground(new java.awt.Color(255, 255, 255));
         btnNotifications.setText("Send Notifications");
         btnNotifications.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnNotifications.addActionListener(new java.awt.event.ActionListener() {
@@ -76,8 +103,10 @@ public class dashboard extends javax.swing.JFrame {
             }
         });
 
+        btnLogout.setBackground(new java.awt.Color(255, 0, 0));
         btnLogout.setFont(new java.awt.Font("Segoe UI Emoji", 1, 16)); // NOI18N
-        btnLogout.setText("LOG-OUT");
+        btnLogout.setForeground(new java.awt.Color(255, 255, 255));
+        btnLogout.setText("LOGOUT");
         btnLogout.setBorder(new javax.swing.border.MatteBorder(null));
         btnLogout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -85,51 +114,91 @@ public class dashboard extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assest/image_2_optimized.png"))); // NOI18N
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assest/image_4_optimized.png"))); // NOI18N
+        jLabel4.setText("jLabel4");
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assest/new_new_optimized.png"))); // NOI18N
+
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assest/notification (2).png"))); // NOI18N
+
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assest/new_shipment_2_optimized.png"))); // NOI18N
+        jLabel7.setBorder(javax.swing.BorderFactory.createCompoundBorder());
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(152, 152, 152)
-                .addComponent(btnReports, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnNotifications, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(61, 61, 61)
-                .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(30, 30, 30)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1))
+                        .addGap(6, 6, 6)
+                        .addComponent(btnShipments, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(128, 128, 128)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(62, 62, 62)
-                        .addComponent(btnShipments, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
-                        .addComponent(btnDrivers, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(96, 96, 96)
+                        .addGap(6, 6, 6)
+                        .addComponent(btnDrivers, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
                         .addComponent(btnAssign, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(107, 107, 107))
+                .addGap(41, 41, 41))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(148, 148, 148)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnReports, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnNotifications, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(148, 148, 148))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(118, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(107, 107, 107))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(15, 15, 15))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(jLabel1)
-                .addGap(112, 112, 112)
+                .addGap(33, 33, 33)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAssign)
                     .addComponent(btnDrivers)
                     .addComponent(btnShipments))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnNotifications)
+                        .addGap(8, 8, 8)
                         .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnReports)
-                            .addComponent(btnNotifications))
-                        .addGap(29, 29, 29))))
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnReports)
+                        .addGap(40, 40, 40))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -163,6 +232,14 @@ public class dashboard extends javax.swing.JFrame {
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLogoutActionPerformed
+
+    private void btnDriversActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDriversActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDriversActionPerformed
+
+    private void btnReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnReportsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -207,6 +284,11 @@ public class dashboard extends javax.swing.JFrame {
     private javax.swing.JButton btnReports;
     private javax.swing.JButton btnShipments;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
