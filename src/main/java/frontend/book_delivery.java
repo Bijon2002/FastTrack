@@ -6,6 +6,7 @@ package frontend;
 import Backend.DBConnection;
 import Backend.DistanceCalculator;
 import static Backend.DistanceCalculator.getDistanceAndTime;
+import Backend.SimpleMailer;
 import backend.SessionManager;
 import static java.awt.geom.Point2D.distance;
 import java.sql.PreparedStatement;
@@ -196,6 +197,29 @@ System.out.println("Welcome ID: " + customerId + " | Name: " + customerName);
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "❌ Failed to book delivery!\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+        
+        String email="";
+        
+        try {
+        int customerId = SessionManager.getCustomerId();
+        Connection con = DBConnection.getConnection();
+        String sql = "SELECT email FROM customers WHERE id = ?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setInt(1, customerId);
+
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            email = rs.getString("email");
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        System.out.println("❌ Customer email not found.");
+    }
+        
+    SimpleMailer.sendEmail(email, "Order Confirmed", "Order is on the way");
+               
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void recieverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recieverActionPerformed
