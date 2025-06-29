@@ -109,7 +109,7 @@ public class signup extends javax.swing.JFrame {
         jPanel1.add(phone, new org.netbeans.lib.awtextra.AbsoluteConstraints(259, 320, 307, -1));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI Emoji", 1, 16)); // NOI18N
-        jLabel7.setText("Password");
+        jLabel7.setText("Phone");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 326, -1, -1));
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assest/logoooo_optimized (1).png"))); // NOI18N

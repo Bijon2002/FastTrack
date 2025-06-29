@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import Backend.DBConnection;
 import Backend.SimpleMailer;
+import backend.SessionManager;
 
 /**
  *
@@ -128,6 +129,7 @@ private void assignDriver() {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Back = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -140,6 +142,19 @@ private void assignDriver() {
         tableAssign = new javax.swing.JTable();
         btnAssign = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        Back1 = new javax.swing.JButton();
+
+        Back.setBackground(new java.awt.Color(0, 102, 0));
+        Back.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        Back.setForeground(new java.awt.Color(255, 255, 255));
+        Back.setText("Back");
+        Back.setBorder(null);
+        Back.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BackActionPerformed(evt);
+            }
+        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -182,10 +197,10 @@ private void assignDriver() {
         ));
         jScrollPane1.setViewportView(tableAssign);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 230, -1, 170));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 240, -1, 170));
 
-        btnAssign.setBackground(new java.awt.Color(102, 102, 255));
-        btnAssign.setFont(new java.awt.Font("Segoe UI Emoji", 1, 16)); // NOI18N
+        btnAssign.setBackground(new java.awt.Color(0, 0, 153));
+        btnAssign.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         btnAssign.setForeground(new java.awt.Color(255, 255, 255));
         btnAssign.setText("Assign");
         btnAssign.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -195,9 +210,9 @@ private void assignDriver() {
                 btnAssignActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAssign, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 170, 80, 30));
+        jPanel1.add(btnAssign, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 180, 80, 30));
 
-        btnClear.setBackground(new java.awt.Color(102, 102, 255));
+        btnClear.setBackground(new java.awt.Color(0, 0, 153));
         btnClear.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         btnClear.setForeground(new java.awt.Color(255, 255, 255));
         btnClear.setText("Clear");
@@ -208,13 +223,40 @@ private void assignDriver() {
                 btnClearActionPerformed(evt);
             }
         });
-        jPanel1.add(btnClear, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 170, 80, 30));
+        jPanel1.add(btnClear, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 180, 80, 30));
+
+        jButton2.setBackground(new java.awt.Color(153, 0, 0));
+        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("Logout");
+        jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jButton2.setBorderPainted(false);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 430, 77, 40));
+
+        Back1.setBackground(new java.awt.Color(0, 102, 0));
+        Back1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        Back1.setForeground(new java.awt.Color(255, 255, 255));
+        Back1.setText("Back");
+        Back1.setBorder(null);
+        Back1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Back1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(Back1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 430, 80, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 733, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -290,6 +332,26 @@ private void assignDriver() {
 
     }//GEN-LAST:event_btnAssignActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        SessionManager.logout();
+        new login().setVisible(true);
+        this.dispose();
+        System.out.println("Logged out successfully.");
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
+        // TODO add your handling code here:
+        new dashboard().setVisible(true); // Go back to dashboard
+        this.dispose(); // Close current form
+    }//GEN-LAST:event_BackActionPerformed
+
+    private void Back1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Back1ActionPerformed
+        // TODO add your handling code here:
+        new dashboard().setVisible(true); // Go back to dashboard
+        this.dispose(); // Close current form
+    }//GEN-LAST:event_Back1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -326,10 +388,13 @@ private void assignDriver() {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Back;
+    private javax.swing.JButton Back1;
     private javax.swing.JButton btnAssign;
     private javax.swing.JButton btnClear;
     private javax.swing.JComboBox<String> comboDriver;
     private javax.swing.JComboBox<String> comboShipment;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
