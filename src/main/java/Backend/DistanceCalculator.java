@@ -4,12 +4,16 @@
  */
 package Backend;
 import java.net.URLEncoder;
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.json.JSONObject;
+import Backend.DBConnection;
+import java.sql.PreparedStatement;
+import javax.swing.JOptionPane;
 /**
  *
  * @author KT
@@ -54,9 +58,33 @@ public class DistanceCalculator {
                                   .getJSONArray("elements").getJSONObject(0)
                                   .getJSONObject("duration").getString("text");
 
+            
+            
             // 📌 Store in result map
             result.put("distance", distance);
             result.put("duration", duration);
+            
+            
+            String cleanDistance = distance.replace("km", "").trim();
+            double distance2 = Double.parseDouble(cleanDistance);
+            // Convert to MySQL time format: "00:24:00"
+            String estimatedTimeFormatted = "00:" + duration.replace("mins", "").trim() + ":00";
+            
+            
+            Connection con = DBConnection.getConnection(); // ✅ Your custom DB connection class
+
+        String sql = "INSERT INTO routes (destination, distance, estimated_time) VALUES (?, ?, ?)";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setString(1, destination);
+        stmt.setDouble(2, distance2);
+        stmt.setString(3, estimatedTimeFormatted);
+            
+        int rows = stmt.executeUpdate();
+        if (rows > 0) {
+            JOptionPane.showMessageDialog(null, "✅ Route added successfully!");
+        }   
+            
+            
 
         } catch (Exception e) {
             // ⚠️ Log any error that occurs
@@ -68,8 +96,8 @@ public class DistanceCalculator {
     
     public static void main(String[] args) {
         // 🔍 Replace with your test locations
-        String origin = "Jaffna";
-        String destination = "Uduvil";
+        String origin = "";
+        String destination = "";
 
         System.out.println("⏳ Requesting distance from " + origin + " to " + destination + "...");
 

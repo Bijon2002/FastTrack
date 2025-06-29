@@ -215,7 +215,8 @@ private void assignDriver() {
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnAssignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAssignActionPerformed
-        // TODO add your handling code here:
+        //public class SimpleMailer.sendEmail()
+
         assignDriver();
     }//GEN-LAST:event_btnAssignActionPerformed
 

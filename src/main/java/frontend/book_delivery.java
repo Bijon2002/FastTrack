@@ -58,6 +58,12 @@ System.out.println("Welcome ID: " + customerId + " | Name: " + customerName);
 
         jLabel2.setText("Contents");
 
+        reciever.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                recieverActionPerformed(evt);
+            }
+        });
+
         jButton1.setText("book");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -131,7 +137,9 @@ System.out.println("Welcome ID: " + customerId + " | Name: " + customerName);
                 conn.close();
                 return;
             }
-
+            
+            // code for distance Backend.DistanceCalculator.getDistanceAndTime(senderAddress, receiverAddress );
+            
             // 📦 Insert into shipments table
             String insertQuery = "INSERT INTO shipments (sender, receiver, contents, status, eta) VALUES (?, ?, ?, 'Pending', NULL)";
             PreparedStatement pstInsert = conn.prepareStatement(insertQuery);
@@ -151,6 +159,10 @@ System.out.println("Welcome ID: " + customerId + " | Name: " + customerName);
             JOptionPane.showMessageDialog(this, "❌ Failed to book delivery!\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void recieverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recieverActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_recieverActionPerformed
 
     /**
      * @param args the command line arguments

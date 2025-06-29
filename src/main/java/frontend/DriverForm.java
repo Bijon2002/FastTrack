@@ -181,6 +181,11 @@ public void loadTable() {
                 "", "", "", ""
             }
         ));
+        driverTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                driverTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(driverTable);
 
         Submitbtn.setText("ADD");
@@ -390,6 +395,17 @@ public void loadTable() {
     private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButton2ActionPerformed
+
+    private void driverTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_driverTableMouseClicked
+     //   int selectedRow = tableShipments.getSelectedRow();
+    //if (selectedRow != -1) {
+  //      txtSender.setText(tableShipments.getValueAt(selectedRow, 1).toString());
+  //      txtReceiver.setText(tableShipments.getValueAt(selectedRow, 2).toString());
+  //      txtContents.setText(tableShipments.getValueAt(selectedRow, 3).toString());
+  ///      jComboBox1.setSelectedItem(tableShipments.getValueAt(selectedRow, 4).toString());
+   //     txtEta.setText(tableShipments.getValueAt(selectedRow, 5).toString());
+    
+    }//GEN-LAST:event_driverTableMouseClicked
     
     /**
      * @param args the command line arguments
