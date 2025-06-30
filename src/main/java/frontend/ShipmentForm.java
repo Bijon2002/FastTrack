@@ -124,6 +124,12 @@ public class ShipmentForm extends javax.swing.JFrame {
             }
         });
 
+        txtSender.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSenderActionPerformed(evt);
+            }
+        });
+
         tableShipments.setModel(new javax.swing.table.DefaultTableModel(
 
             new Object [][] {},
@@ -376,15 +382,14 @@ try {
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void tableShipmentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableShipmentsMouseClicked
-        // TODO add your handling code here:
-         int selectedRow = tableShipments.getSelectedRow();
-    if (selectedRow != -1) {
-        txtSender.setText(tableShipments.getValueAt(selectedRow, 1).toString());
-        txtReceiver.setText(tableShipments.getValueAt(selectedRow, 2).toString());
-        txtContents.setText(tableShipments.getValueAt(selectedRow, 3).toString());
-        jComboBox1.setSelectedItem(tableShipments.getValueAt(selectedRow, 4).toString());
-        typetxt.setText(tableShipments.getValueAt(selectedRow, 5).toString());
-    }
+        int selectedRow = tableShipments.getSelectedRow();
+        if (selectedRow != -1) {
+            txtSender.setText(tableShipments.getValueAt(selectedRow, 2).toString());
+            txtReceiver.setText(tableShipments.getValueAt(selectedRow, 3).toString());
+            txtContents.setText(tableShipments.getValueAt(selectedRow, 4).toString());
+            typetxt.setText(tableShipments.getValueAt(selectedRow, 5).toString());
+            jComboBox1.setSelectedItem(tableShipments.getValueAt(selectedRow, 6).toString());
+        }
         
     }//GEN-LAST:event_tableShipmentsMouseClicked
 
@@ -393,6 +398,10 @@ try {
         new dashboard().setVisible(true); // Go back to dashboard
         this.dispose(); // Close current form
     }//GEN-LAST:event_BackActionPerformed
+
+    private void txtSenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSenderActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSenderActionPerformed
 
     /**
      * @param args the command line arguments

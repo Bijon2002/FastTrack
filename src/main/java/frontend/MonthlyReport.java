@@ -6,9 +6,12 @@ package frontend;
 
 import Backend.DBConnection;
 import backend.SessionManager;
+import java.io.File;
+import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -144,6 +147,11 @@ comboMonth.addActionListener(new java.awt.event.ActionListener() {
     jPanel1.add(Back, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 80, 40));
 
     jButton1.setText("Generate as CSV file");
+    jButton1.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jButton1ActionPerformed(evt);
+        }
+    });
     jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 390, -1, -1));
 
     jButton4.setBackground(new java.awt.Color(153, 0, 0));
@@ -204,6 +212,61 @@ comboMonth.addActionListener(new java.awt.event.ActionListener() {
     private void comboYearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboYearActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboYearActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+    JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setDialogTitle("Save Report as CSV");
+    int month = Integer.parseInt(comboMonth.getSelectedItem().toString());
+    int year = Integer.parseInt(comboYear.getSelectedItem().toString());
+    
+    int userSelection = fileChooser.showSaveDialog(this);
+    
+    if (userSelection == JFileChooser.APPROVE_OPTION) {
+        File fileToSave = fileChooser.getSelectedFile();
+        String filePath = fileToSave.getAbsolutePath();
+
+        // Add .csv extension if missing
+        if (!filePath.endsWith(".csv")) {
+            filePath += ".csv";
+        }
+
+        try (Connection con = DBConnection.getConnection()) {
+            // Example: Get shipments from June 2025
+            String sql = "SELECT id, sender, receiver, contents, status, type FROM shipments "
+                       + "WHERE MONTH(created_at) = ? AND YEAR(created_at) = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, month); // June (or get from dropdown)
+            ps.setInt(2, year); // Year (or get from dropdown)
+
+            ResultSet rs = ps.executeQuery();
+            FileWriter writer = new FileWriter(filePath);
+            
+            // Write headers
+            writer.write("Shipment ID,Sender,Receiver,Contents,Status,Type\n");
+
+            // Write data rows
+            while (rs.next()) {
+                writer.write(rs.getInt("id") + ","
+                        + rs.getString("sender") + ","
+                        + rs.getString("receiver") + ","
+                        + rs.getString("contents") + ","
+                        + rs.getString("status") + ","
+                        + rs.getString("type") + "\n");
+            }
+
+            writer.flush();
+            writer.close();
+
+            JOptionPane.showMessageDialog(this, "✅ Report exported to:\n" + filePath);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "❌ Failed to export CSV:\n" + e.getMessage());
+        }
+    }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
